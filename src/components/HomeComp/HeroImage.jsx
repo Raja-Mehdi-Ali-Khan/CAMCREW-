@@ -39,6 +39,7 @@ const HeroImage = () => {
             <span className=" flex justify-center lg:justify-normal bg-black text-bgimage items-center my-1 ">
               {" "}
               {/* <AnimatedTextCharacter text=" Moments " />{" "} */}
+              {/* holla */}
               Moments
             </span>
             Made Easy
