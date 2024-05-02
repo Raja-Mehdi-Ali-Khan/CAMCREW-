@@ -515,14 +515,14 @@ const ServiceDetailsPage = () => {
                         /per day
                       </span>
                     </p>
-                    {/* <p className="text-green-600 dark:text-green-300 ">
-                      {discountPercentage}% off
-                    </p> */}
+                    {
+
+                    }
                   </div>
                 </div>
                 <div className="border p-2 pr-4 rounded-2xl my-4">
-                  <div className="flex">
-                    <div className="py-3 ">
+                  <div className="flex ">
+                    <div className="py-3 " >
                       <label>Book From:</label>
                       <DatePicker
                         selected={startDate}

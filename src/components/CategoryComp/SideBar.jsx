@@ -55,7 +55,7 @@ const SideBar = ({ category }) => {
   } = useFilter();
   const [slider, setSlider] = useState();
 
-  const priceOptions = ["90", "50", "25"];
+  const priceOptions = ["2000", "1000", "600"];
 
   const [selectedPrice, setSelectedPrice] = useState(null);
 
