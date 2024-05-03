@@ -28,7 +28,7 @@ const FormField = ({ label, id, type, placeholder }) => {
         name={id}
         type={type}
         placeholder={placeholder}
-        className="w-full text-black rounded-md focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300"
+        className="w-full text-black rounded-md focus:ring focus:ring-opacity-75 "
       />
       <ErrorMessage
         name={id}
@@ -50,7 +50,7 @@ const TextAreaField = ({ label, id, placeholder }) => {
         id={id}
         name={id}
         placeholder={placeholder}
-        className="w-full rounded-md focus:ring text-black focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300"
+        className="w-full rounded-md focus:ring text-black focus:ring-opacity-75 "
       />
       <ErrorMessage
         name={id}
@@ -71,11 +71,11 @@ const ImageUpload = () => {
         <img
           src="https://source.unsplash.com/30x30/?random"
           alt=""
-          className="w-10 h-10 rounded-full dark:bg-gray-300"
+          className="w-10 h-10 rounded-full "
         />
         <button
           type="button"
-          className="px-4 py-2 border rounded-md dark:border-gray-800"
+          className="px-4 py-2 border rounded-md "
         >
           Change
         </button>
@@ -86,7 +86,7 @@ const ImageUpload = () => {
 
 const FormSection = ({ title, description, children }) => {
   return (
-    <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-50">
+    <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm ">
       <div className="space-y-2 col-span-full lg:col-span-1">
         <p className="font-medium">{title}</p>
         <p className="text-xs">{description}</p>
@@ -104,7 +104,7 @@ const FormComponent = () => {
   console.log(user?.email);
   return (
     <div className="text-white">
-      <section className="p-6 dark:bg-gray-100 dark:text-gray-900">
+      <section className="p-6 ">
         <Formik
           initialValues={{
             firstname: user?.firstname || "",
@@ -170,7 +170,7 @@ const FormComponent = () => {
                   placeholder="Email"
                 />
                 <FormField
-                  label="Address"
+                  label="Country"
                   id="address"
                   type="text"
                   placeholder=""

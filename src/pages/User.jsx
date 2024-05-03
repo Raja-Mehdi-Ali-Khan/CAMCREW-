@@ -147,7 +147,7 @@ const EditProfilePage = () => {
 
   return (
     <div className="text-white">
-      <section className="p-6 dark:bg-gray-100 dark:text-gray-900">
+      <section className="p-6 dark:bg-gray-300 ">
         {userData ? (
           <Formik
             initialValues={

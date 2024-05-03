@@ -16,23 +16,24 @@ const Footer = () => {
   return (
     <div id="footer" className="bg-footer_bg text-white">
       {/* Get started */}
-      <section className="py-10">
+      {/* <section className="py-10">
         <div className="mx-auto flex flex-col md:flex-row text-center place-content-center gap-8">
           <div>
-            {/* <h3 className="text-4xl">Ready to get started?</h3> */}
-            {/* <h3 className="text-xl">Let's talk today</h3> */}
+            <h3 className="text-4xl">Ready to get started?</h3>
+            <h3 className="text-xl">Let's talk today</h3>
           </div>
           <div className="self-center">
-            {/* <Button>Get Started</Button> */}
+            <Button>Get Started</Button>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer */}
       <footer className="md:py-16 text-xl">
         <div className="px-8 my-10 text-center place-content-center grid grid-cols-4 gap-10">
           <div className="col-span-4 md:col-span-1">
             <h3 className="text-xl mb-4">CamCrew</h3>
+            Your best destination to hire cameraman...
             {/* <p className="text-xl">Explore Cameraman</p> */}
           </div>
 
@@ -77,7 +78,7 @@ const Footer = () => {
           <div className="col-span-4 md:col-span-1">
             <h3 className="text-xltext-xl mb-4">Call Us</h3>
             <a href="#" className="text-white">
-              +91121893823
+              +91 9777135832
             </a>
           </div>
         </div>

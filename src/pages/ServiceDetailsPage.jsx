@@ -525,6 +525,7 @@ const ServiceDetailsPage = () => {
                     <div className="py-3 " >
                       <label>Book From:</label>
                       <DatePicker
+                        className="outline w-28 outline-gray-500"
                         selected={startDate}
                         onChange={handleStartDateChange}
                         excludeDateIntervals={arr}
@@ -533,9 +534,10 @@ const ServiceDetailsPage = () => {
                         <div>Start Date: {startDate.toLocaleDateString()}</div>
                       )} */}
                     </div>
-                    <div className="py-3 px-4   ">
+                    <div className="py-3 px-4 text-black ">
                       <label>Book To:</label>
-                      <DatePicker
+                      <DatePicker 
+                        className="outline w-28 outline-gray-500"
                         selected={endDate}
                         onChange={handleEndDateChange}
                         excludeDateIntervals={arr}
