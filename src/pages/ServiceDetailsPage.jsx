@@ -696,7 +696,17 @@ const ServiceDetailsPage = () => {
                   </div>
                   <div className="w-full px-4 mb-4 lg:mb-0 lg:w-1/2">
                     <button
-                      onClick={paymentHandler}
+                      // onClick={paymentHandler }
+                      onClick={ (e) => { 
+
+                        if (isAuthenticated) {
+                              paymentHandler(e);
+                            } else {
+                              setShowModal(true);
+                            }
+                        
+                        
+                         }  }
                       // onClick={handleCheckout}
                       className="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300"
                     >
