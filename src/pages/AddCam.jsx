@@ -15,16 +15,15 @@ const AddCam = () => {
   
   const handleSubmit = async () => {
     try {
-      // formData = { ...formData, pincode: userData.zip };
+
       const response = await axios.post(
         "https://camapi-in57.onrender.com/api/items",
         formData
       );
-      console.log(response.data); // Log the created product data
+      console.log(response.data);
       setFormData({});
       alert("Added a Service");
-      // window.location.reload();
-      // Optionally, you can perform additional actions after creating the product
+    
     } catch (error) {
       console.error("Error creating product:", error);
     }
@@ -32,7 +31,7 @@ const AddCam = () => {
 
   const handleUpload = (index, file) => {
     setImageUrls((prevImageUrls) => {
-      // Replace the existing entry at the specified index with the new file
+    
       const updatedImageUrls = { ...prevImageUrls, [index]: file };
       return updatedImageUrls;
     });
@@ -53,15 +52,14 @@ const AddCam = () => {
             formData
           );
 
-          const uploadedUrl = response.data.data.url; // Assuming the response contains the URL of the uploaded image
+          const uploadedUrl = response.data.data.url;
           uploadedUrls.push(uploadedUrl);
         }
       }
 
-      // After uploading all images, you can store the array of URLs in your database or perform any other necessary operations
       console.log("Uploaded URLs:", uploadedUrls);
       setFormData({ ...formData, image: uploadedUrls });
-      // Add your database upload logic here
+ 
     } catch (error) {
       console.error("Upload error:", error);
     } finally {
@@ -70,9 +68,9 @@ const AddCam = () => {
   };
 
   const handleChange = (e) => {
-    // Handle input changes
+   
     const { name, value } = e.target;
-    // Update state with input value
+
     setFormData({
       ...formData,
       [name]: value,
@@ -93,12 +91,10 @@ const AddCam = () => {
     } else {
       setYoutubeId("");
     }
-    // setFormData({ ...formData,  });
   };
 
   const handleFeature = (e) => {
     e.preventDefault();
-    // Handle feature addition
   };
 
   useEffect(() => {
@@ -154,7 +150,7 @@ const AddCam = () => {
             {youtubeId && (
               <div className=" text-white font-semibold">
                 <p>YouTube Video ID: {youtubeId}</p>
-                {/* You can save the youtubeId to the database here */}
+                {}
               </div>
             )}
             <div className="flex flex-col   items-center gap-4 md:gap-20">

@@ -67,13 +67,7 @@ const FavPage = () => {
             >
               Clear Favourite
             </button>
-            {/* <button
-              type="button"
-              onClick={() => handleCheckout()}
-              className="px-6 py-2 bg-slate-100 border rounded-md dark:bg-violet-400  dark:border-violet-400"
-            >
-              Continue to Checkout
-            </button> */}
+            {}
           </div>
         </div>
       )}
