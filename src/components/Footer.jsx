@@ -15,18 +15,7 @@ const Footer = () => {
 
   return (
     <div id="footer" className="bg-footer_bg text-white">
-      {/* Get started */}
-      {/* <section className="py-10">
-        <div className="mx-auto flex flex-col md:flex-row text-center place-content-center gap-8">
-          <div>
-            <h3 className="text-4xl">Ready to get started?</h3>
-            <h3 className="text-xl">Let's talk today</h3>
-          </div>
-          <div className="self-center">
-            <Button>Get Started</Button>
-          </div>
-        </div>
-      </section> */}
+      {}
 
       {/* Footer */}
       <footer className="md:py-16 text-xl">

@@ -66,7 +66,7 @@ const SideBar = ({ category }) => {
   const [selectedState, setSelectedState] = useState("");
 
   useEffect(() => {
-    // Fetch states from the API
+  
     axios
       .get("https://camapi-in57.onrender.com/api/states")
       .then((response) => {
@@ -91,7 +91,7 @@ const SideBar = ({ category }) => {
   const handlePriceChange = (price) => {
     setFilters({ ...filters, price });
     setSelectedPrice(price);
-    // Add any additional logic you need here
+   
   };
 
   const [pincode, setPincode] = useState("");
@@ -278,7 +278,7 @@ const SideBar = ({ category }) => {
                   value={price}
                   checked={filters.price === price}
                   onChange={() => handlePriceChange(price)}
-                  className="mr-2" // Add margin to separate the radio button and label
+                  className="mr-2" 
                 />
                 Under ₹{price}
               </label>
