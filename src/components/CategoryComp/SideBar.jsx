@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Star from "./Star";
 import { categories } from "../../data";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useFilter } from "../../context/FilterContext";
+import axios from "axios";
 
 export const AccordionItem = ({ title, content, index }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -55,11 +56,32 @@ const SideBar = ({ category }) => {
   } = useFilter();
   const [slider, setSlider] = useState();
 
-  const priceOptions = ["2000", "1000", "600"];
+  const priceOptions = ["4000", "2500", "1000"];
 
   const [selectedPrice, setSelectedPrice] = useState(null);
 
   const [selectedRating, setSelectedRating] = useState(null);
+
+  const [states, setStates] = useState([]);
+  const [selectedState, setSelectedState] = useState("");
+
+  useEffect(() => {
+    // Fetch states from the API
+    axios
+      .get("https://camapi-in57.onrender.com/api/states")
+      .then((response) => {
+        setStates(response.data.states);
+      })
+      .catch((error) => {
+        console.error("Error fetching states:", error);
+      });
+  }, []);
+
+  const handleStateChange = (state) => {
+    // setSelectedState(e.target.value);
+    // console.log(state);
+    setFilters({ ...filters, state });
+  };
 
   const handleRatingChange = (rating) => {
     setFilters({ ...filters, rating });
@@ -126,6 +148,28 @@ const SideBar = ({ category }) => {
         index={2}
       />
       <AccordionItem
+        title="Search by States"
+        content={
+          <div className="flex flex-col items-center p-1 text-xl">
+            <select
+              value={selectedState}
+              onChange={(e) => {
+                handleStateChange(e.target.value);
+                setSelectedState(e.target.value);
+              }}
+            >
+              <option value="">Select</option>
+              {states.map((state, index) => (
+                <option key={index} value={state}>
+                  {state}
+                </option>
+              ))}
+            </select>
+          </div>
+        }
+        index={3}
+      />
+      <AccordionItem
         title="Search by Pincode"
         content={
           <div className="flex flex-col items-center p-1 text-xl">
@@ -144,7 +188,7 @@ const SideBar = ({ category }) => {
             </button>
           </div>
         }
-        index={3}
+        index={4}
       />
 
       <AccordionItem
@@ -197,7 +241,7 @@ const SideBar = ({ category }) => {
                 sort.popularAsc ? "bg-bgimage font-semibold text-gray-900" : ""
               }  text-blue-gray-500/80  `}
             >
-              Popularity (Low to High)
+              Rating(Low to High)
             </div>
             <div
               onClick={() => {
@@ -213,11 +257,11 @@ const SideBar = ({ category }) => {
                 sort.popularDesc ? "bg-bgimage font-semibold text-gray-900" : ""
               }  text-blue-gray-500/80 `}
             >
-              Popularity (High to Low)
+              Rating(High to Low)
             </div>
           </div>
         }
-        index={4}
+        index={5}
       />
       <AccordionItem
         title="Price Filter"
@@ -241,7 +285,7 @@ const SideBar = ({ category }) => {
             ))}
           </div>
         }
-        index={5}
+        index={6}
       />
     </div>
   );

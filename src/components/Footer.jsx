@@ -33,7 +33,8 @@ const Footer = () => {
         <div className="px-8 my-10 text-center place-content-center grid grid-cols-4 gap-10">
           <div className="col-span-4 md:col-span-1">
             <h3 className="text-xl mb-4">CamCrew</h3>
-            Your best destination to hire cameraman...
+            Your Ultimate destination to hire perfect-fit
+            cameramen...
             {/* <p className="text-xl">Explore Cameraman</p> */}
           </div>
 
@@ -80,8 +81,16 @@ const Footer = () => {
             <a href="#" className="text-white">
               +91 9777135832
             </a>
+            <h3 className="text-xltext-xl mb-4">Or Mail us</h3>
+            <a href="#" className="text-white">
+              epicscamcrew@gmail.com
+            </a>
           </div>
+          
         </div>
+
+          
+        
 
         {/* Bottom footer */}
         <div className=" ">

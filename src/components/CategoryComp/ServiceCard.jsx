@@ -4,8 +4,9 @@ import Star from "./Star";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useComparison } from "../../context/ComparsionContext";
+import { toast, Bounce } from "react-toastify";
 
-const ProductCard = ({ product }) => {
+const ServiceCard = ({ product }) => {
   const { addToCart } = useCart();
   const [showModal, setShowModal] = useState(false);
   const { addProduct } = useComparison();
@@ -26,7 +27,7 @@ const ProductCard = ({ product }) => {
     <>
       <div
         onClick={() => navigate(`/product/${product?._id}`)}
-        className="w-full h-[30rem] relative  max-w-[22rem] bg-white border border-gray-200 rounded-lg shadow  "
+        className="w-full h-[31rem] relative  max-w-[22rem] bg-white border border-gray-200 rounded-lg shadow  "
       >
         <div className="flex justify-center items-center">
           <img
@@ -48,7 +49,9 @@ const ProductCard = ({ product }) => {
               {product?.count} customer reviews
             </span>
           </div>
-          <div className=" font-bold ">Available In {product?.pincode}</div>
+          <div className=" font-bold ">
+            Available In {product?.pincode} ,{product?.state}
+          </div>
           <div className="flex flex-col gap-4 absolute bottom-8 items-start justify-between pr-8 w-full">
             {/* <div className=""> */}
             <div>
@@ -62,7 +65,18 @@ const ProductCard = ({ product }) => {
                 onClick={(e) => {
                   e.stopPropagation();
                   addProduct(product);
-                  alert("Added to Compare");
+                  // alert("Added to Compare");
+                  toast.success("Added to Compare", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                  });
                   console.log("add to", product);
                 }}
                 className="text-white   bg-gray-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-10 py-2.5 text-center dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -115,4 +129,4 @@ const ProductCard = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default ServiceCard;

@@ -1,13 +1,7 @@
-// src/App.js
+
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-// import {
-//   Routes,
-//   Route,
-//   createBrowserRouter,
-//   RouterProvider,
-//   Router,
-// } from "react-router-dom";
+
 import Home from "./pages/Home";
 import CategoryPage from "./pages/CategoryPage";
 import ServiceDetailsPage from "./pages/ServiceDetailsPage";
@@ -27,24 +21,6 @@ import { ComparisonProvider } from "./context/ComparsionContext";
 import { UserProvider } from "./context/UserContext";
 import FavPage from "./pages/FavPage";
 
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <Home />,
-//   },
-//   {
-//     path: "/category/:categoryId",
-//     element: <CategoryPage />,
-//   },
-//   {
-//     path: "/product/:productId",
-//     element: <ServiceDetailsPage />,
-//   },
-//   {
-//     path: "/cart",
-//     element: <CartPage />,
-//   },s
-// ]);
 
 const App = () => {
   const googleTranslateElementInit = () => {

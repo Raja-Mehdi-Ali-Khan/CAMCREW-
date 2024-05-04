@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+import { useUser } from "../context/UserContext";
 
 const validationSchema = Yup.object().shape({
   firstname: Yup.string().required("First name is required"),
@@ -100,6 +101,7 @@ const FormSection = ({ title, description, children }) => {
 
 const FormComponent = () => {
   const { user, logout, isAuthenticated, isLoading } = useAuth0();
+  const { join, setJoin } = useUser();
   console.log(user);
   console.log(user?.email);
   return (
@@ -121,18 +123,18 @@ const FormComponent = () => {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting }) => {
             try {
-              // Make a POST request to the API endpoint with form values
+
               const response = await axios.post(
                 "https://camapi-in57.onrender.com/api/users",
                 { ...values, isCameraman: true }
               );
 
-              // If the request is successful, log the response and set submitting to false
               console.log(response.data);
               setSubmitting(false);
+              setJoin(!join);
               alert("Joined as Cameraman");
             } catch (error) {
-              // Check if error.response exists before accessing its properties
+
               if (error.response) {
                 console.error(error.response.data.error);
               } else {
@@ -170,7 +172,7 @@ const FormComponent = () => {
                   placeholder="Email"
                 />
                 <FormField
-                  label="Country"
+                  label="Address"
                   id="address"
                   type="text"
                   placeholder=""
@@ -189,25 +191,7 @@ const FormComponent = () => {
                   placeholder=""
                 />
               </FormSection>
-              {/* <FormSection
-                title="Profile"
-                description="Adipisci fuga autem eum!"
-              >
-                <FormField
-                  label="Username"
-                  id="username"
-                  type="text"
-                  placeholder="Username"
-                />
-                <FormField
-                  label="Website"
-                  id="website"
-                  type="text"
-                  placeholder="https://"
-                />
-                <TextAreaField label="Bio" id="bio" placeholder="" />
-                <ImageUpload />
-              </FormSection> */}
+              {}
               <button
                 type="submit"
                 className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"

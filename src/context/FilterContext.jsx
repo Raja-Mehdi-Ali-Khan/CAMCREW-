@@ -8,6 +8,7 @@ const FilterProvider = ({ children }) => {
     rating: null,
     price: null,
     pincode: null,
+    state: null,
   });
   const [sort, setSort] = useState({
     priceAsc: false,
@@ -43,16 +44,21 @@ const FilterProvider = ({ children }) => {
         (product) => product.averageRating >= filters.rating
       );
     }
+    if (filters.state !== null) {
+      filteredProducts = filteredProducts.filter(
+        (product) => product.state == filters.state
+      );
+    }
 
     // Apply price filter
     if (filters.price !== null) {
       filteredProducts = filteredProducts.filter(
-        (product) => product.price <= filters.price
+        (product) => product.price <= parseInt(filters.price)
       );
     }
     if (filters.pincode !== null) {
-      filteredProducts = filteredProducts.filter(
-        (product) => product.pincode === filters.pincode
+      filteredProducts = filteredProducts.filter((product) =>
+        product.pincode.includes(filters.pincode)
       );
     }
 

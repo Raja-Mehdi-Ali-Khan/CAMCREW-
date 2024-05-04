@@ -10,6 +10,7 @@ export const useUser = () => useContext(UserContext);
 export const UserProvider = ({ children }) => {
   // State to store user data
   const [userData, setUser] = useState(null);
+  const [join, setJoin] = useState(false);
 
   // Function to update user data
   const updateUser = (userData) => {
@@ -17,7 +18,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ userData, updateUser }}>
+    <UserContext.Provider value={{ userData, updateUser, join, setJoin }}>
       {children}
     </UserContext.Provider>
   );

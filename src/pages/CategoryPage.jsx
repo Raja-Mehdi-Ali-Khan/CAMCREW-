@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link, useParams } from "react-router-dom";
 import { list } from "../data";
-import ProductCard from "../components/CategoryComp/ProductCard";
+import ServiceCard from "../components/CategoryComp/ServiceCard";
 import { Button } from "../components/Button";
 import SideBar from "../components/CategoryComp/SideBar";
 import { useFilter } from "../context/FilterContext";
@@ -22,7 +22,9 @@ const CategoryPage = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("https://camapi-in57.onrender.com/api/items");
+      const response = await axios.get(
+        "https://camapi-in57.onrender.com/api/items"
+      );
       console.log(response.data);
       setList(response.data);
     } catch (error) {
@@ -43,29 +45,45 @@ const CategoryPage = () => {
 
     // Create an array to store all the promises for fetching rating data
     const fetchRatingPromises = categoryProducts.map((product) =>
-      axios.get(`https://camapi-in57.onrender.com/api/rating/rat/${product?._id}`)
+      axios.get(
+        `https://camapi-in57.onrender.com/api/rating/rat/${product?._id}`
+      )
+    );
+
+    // Create an array to store all the promises for fetching state data
+    const fetchStatePromises = categoryProducts.map((product) =>
+      axios.get(`https://camapi-in57.onrender.com/state/${product.email}`)
     );
 
     // Use Promise.all to wait for all API requests to complete
-    Promise.all(fetchRatingPromises)
+    Promise.all([...fetchRatingPromises, ...fetchStatePromises])
       .then((responses) => {
-        // Map over the responses to extract averageRating and count for each product
+        // Extract rating data and state data from responses
+        const ratingResponses = responses.slice(0, fetchRatingPromises.length);
+        const stateResponses = responses.slice(fetchRatingPromises.length);
+
+        // Map over the rating responses to extract averageRating and count for each product
         const updatedProducts = categoryProducts.map((product, index) => {
-          const { averageRating, count } = responses[index].data;
-          // Return the product object with averageRating and count added
+          const { averageRating, count } = ratingResponses[index].data;
+          const state = stateResponses[index].data.state;
+          // Return the product object with averageRating, count, and state added
           return {
             ...product,
             averageRating,
             count,
+            state,
           };
         });
+
+        console.log(updatedProducts);
+
         // Apply filters to the updated products list
         const filteredProducts = applyFilters(updatedProducts, filters);
-        // Set the updated products with average rating and count to the state
+        // Set the updated products with average rating, count, and state to the state
         setProducts(filteredProducts);
       })
       .catch((error) => {
-        console.error("Error fetching rating data:", error);
+        console.error("Error fetching data:", error);
         // If there's an error, set products to an empty array or handle as needed
         setProducts([]);
       });
@@ -77,7 +95,7 @@ const CategoryPage = () => {
 
   // list.map((categories) => console.log(categories.category == categoryId));
   const Products = products.map((item) => (
-    <ProductCard key={item._id} product={item} />
+    <ServiceCard key={item._id} product={item} />
   ));
 
   const toggleSidebar = () => {
@@ -131,9 +149,14 @@ const CategoryPage = () => {
                 </a>
               </div>
             </li>
-            {
-              
-            }
+            {/* <li aria-current="page">
+      <div className="flex items-center">
+        <svg className="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m1 9 4-4-4-4" />
+        </svg>
+        <span className="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Flowbite</span>
+      </div>
+    </li> */}
           </ol>
         </nav>
 
@@ -164,7 +187,12 @@ const CategoryPage = () => {
           <div className="flex justify-center items-center ">
             <div
               onClick={() => {
-                setFilters({ rating: null, price: null, pincode: null });
+                setFilters({
+                  rating: null,
+                  price: null,
+                  pincode: null,
+                  state: null,
+                });
                 setSort({
                   priceAsc: false,
                   priceDesc: false,

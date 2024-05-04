@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { subDays, addDays } from "date-fns";
 import moment from "moment";
+import { toast, Bounce } from "react-toastify";
 
 import { list } from "../data";
 import Star from "../components/CategoryComp/Star";
@@ -14,15 +15,64 @@ import axios from "axios";
 import RatingComp from "../components/RatingComp";
 import { IoMdAdd, IoMdClose, IoMdRemove } from "react-icons/io";
 import Calendar from "react-calendar";
-
+import Keyboard from "react-simple-keyboard";
+import "react-simple-keyboard/build/css/index.css";
+// import "simple-keyboard-layouts/build/css/index.css";
+import { TeluguLayout } from "simple-keyboard-layouts";
+// import TeluguKeyboard from "../components/TeluguKeyBoard";
 const ServiceDetailsPage = () => {
   const { addToCart } = useCart();
   const { productId } = useParams();
+  const onChange = (input) => {
+    console.log("Input changed", input);
+    setDesc(input);
+  };
+
+  const TeluguLayout = {
+    default: [
+      "౧ ౨ ౩ ౪ ౫ ౬ ౭ ౮ ౯ ౦",
+      "ా ి ీ ు ూ ృ ౄ ె ే ై",
+      "ం ః ఁ ఼ ్ ర ల ు ూ ృ",
+      "{shift} య మ న వ బ హ {bksp}",
+      "{space} {accept}",
+    ],
+    shift: [
+      "౧ ౨ ౩ ౪ ౫ ౬ ౭ ౮ ౯ ౦",
+      "ా ి ీ ు ూ ృ ౄ ె ే ై",
+      "ం ః ఁ ఼ ్ ర ల ు ూ ృ",
+      "{shift} య మ న వ బ హ {bksp}",
+      "{space} {accept}",
+    ],
+  };
+
+  const HindiLayout = {
+    default: [
+      "अ आ इ ई उ ृ ॄ ए ौ",
+      "क ख ग घ ङ च छ ज झ ञ",
+      "ट ठ ड ढ ण त थ द ध न",
+      "{shift} प फ ब भ म {bksp}",
+      "{space} {accept}",
+    ],
+    shift: [
+      "अ आ इ ई उ ृ ॄ ए ौ",
+      "क ख ग घ ङ च छ ज झ ञ",
+      "ट ठ ड ढ ण त थ द ध न",
+      "{shift} प फ ब भ म {bksp}",
+      "{space} {accept}",
+    ],
+  };
+
+  const onKeyPress = (button) => {
+    console.log("Button pressed", button);
+  };
+
   const [list, setList] = useState([]);
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("https://camapi-in57.onrender.com/api/items");
+      const response = await axios.get(
+        "https://camapi-in57.onrender.com/api/items"
+      );
       // console.log(response.data);
       setList(response.data);
     } catch (error) {
@@ -43,8 +93,6 @@ const ServiceDetailsPage = () => {
 
   const [excludedIntervals, setExcludedIntervals] = useState([]);
 
-
-
   const handleStartDateChange = (date) => {
     setStartDate(date);
     // calculateNumberOfDays(date, endDate);
@@ -63,17 +111,26 @@ const ServiceDetailsPage = () => {
       setNumberOfDays(Math.round(differenceInDays));
     }
   }, [startDate, endDate]);
-  // };
 
-  // useEffect(() => {
-  //   if (checkIn && checkOut) {
-  //     const startDate = new Date(checkIn);
-  //     const endDate = new Date(checkOut);
-  //     const differenceInTime = endDate.getTime() - startDate.getTime();
-  //     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-  //     setNumberOfDays(Math.round(differenceInDays));
-  //   }
-  // }, [checkIn, checkOut]);
+  useEffect(() => {
+    if (numberOfDays < 0) {
+      toast.error("Add Valid Dates!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+      setStartDate(null);
+      setEndDate(null);
+      setNumberOfDays(0);
+    }
+  }, [numberOfDays]);
+
 
   const handleCheckInChange = (ev) => {
     setCheckIn(ev.target.value);
@@ -87,23 +144,23 @@ const ServiceDetailsPage = () => {
 
   const [rating, setRating] = useState("");
 
-  // const { user, logout, isAuthenticated, isLoading } = useAuth0();
+
   const [desc, setDesc] = useState("");
+  const [isVirtual, setVirtual] = useState(false);
   const [Loading, setLoading] = useState(false);
   const [ratingArr, setRatingArr] = useState([]);
 
   const [averageRating, setAverageRating] = useState(null);
   const [ratingCount, setRatingCount] = useState(null);
-  // Replace with your actual product ID
+
 
   useEffect(() => {
     const fetchRatingData = async () => {
       try {
-        // Make a GET request to fetch the rating data for the product ID
+       
         const response = await axios.get(
           `https://camapi-in57.onrender.com/api/rating/rat/${productId}`
         );
-        // Extract average rating and count from the response data
         const { averageRating, count } = response.data;
         // Update state with the received data
         setAverageRating(averageRating || 0);
@@ -155,7 +212,7 @@ const ServiceDetailsPage = () => {
 
   const handleAddToCartClick = () => {
     if (isAuthenticated) {
-      addToCart(product[0], product[0]?.id);
+      addToCart(product[0], product[0]?._id);
     } else {
       setShowModal(true);
     }
@@ -165,14 +222,17 @@ const ServiceDetailsPage = () => {
   const handleRating = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://camapi-in57.onrender.com/api/rating", {
-        rating,
-        desc,
-        productId: productId,
-        userName: user?.given_name,
-        userImage: user?.picture,
-        count: 1,
-      });
+      const response = await axios.post(
+        "https://camapi-in57.onrender.com/api/rating",
+        {
+          rating,
+          desc,
+          productId: productId,
+          userName: user?.given_name,
+          userImage: user?.picture,
+          count: 1,
+        }
+      );
       setRating("");
       setDesc("");
       setState(!state);
@@ -187,6 +247,7 @@ const ServiceDetailsPage = () => {
     setRating(parseInt(star));
   };
   const [isVideo, setVideo] = useState(false);
+  const [arr, setArr] = useState([]);
   const [idx, setIdx] = useState(0);
   const handleIndex = (index) => {
     // console.log(index);
@@ -198,7 +259,7 @@ const ServiceDetailsPage = () => {
     const response = await fetch("https://camapi-in57.onrender.com/order", {
       method: "POST",
       body: JSON.stringify({
-        amount: parseInt(product[0]?.price * numberOfDays) * 100,
+        amount: (parseInt(product[0]?.price * numberOfDays) * 100) / 2,
         currency: "INR",
         receipt: productId,
       }),
@@ -210,55 +271,85 @@ const ServiceDetailsPage = () => {
     // console.log(order);
 
     var options = {
-      key: import.meta.env.REACT_APP_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
-      amount: parseInt(product[0]?.price * numberOfDays) * 100,
+      key: import.meta.env.REACT_APP_RAZORPAY_KEY_ID,
+      amount: (parseInt(product[0]?.price) * 100) / 2,
       currency: "INR",
-      name: "CamCrew", //your business name
+      name: "CamCrew",
       description: "Test Transaction",
       image: "https://example.com/your_logo",
-      order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      handler: async function (response) {
-        const body = {
-          ...response,
-        };
+      order_id: order.id, 
+      handler: function (response) {
+        const body = { ...response };
 
-        const validateRes = await fetch(
-          "https://camapi-in57.onrender.com/order/validate",
-          {
-            method: "POST",
-            body: JSON.stringify(body),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        const jsonRes = await validateRes.json();
-
-        if (jsonRes.msg == "success") {
-          try {
-            if (startDate && endDate) {
-              const response = await axios.put(
+        fetch("https://camapi-in57.onrender.com/order/validate", {
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((validateRes) => validateRes.json())
+          .then((jsonRes) => {
+            if (jsonRes.msg === "success" && startDate && endDate) {
+              return axios.put(
                 "https://camapi-in57.onrender.com/update-excluded-intervals",
                 {
-                  email: product[0]?.email, // Replace with the user's email
+                  email: product[0]?.email, 
                   start: startDate,
                   end: endDate,
                 }
               );
-
-              // console.log(response.data.message); // Log success message
+            } else {
+              throw new Error("Validation failed or missing start/end dates");
             }
-          } catch (error) {
-            console.error("Error:", error.response.data.message); // Log error message
-          }
-        }
+          })
+          .then(() => {
+            return axios.post("https://camapi-in57.onrender.com/sendmail", {
+              email: product[0]?.email, 
+              startDate: moment(startDate).format("MMM DD, YYYY"), 
+              endDate: moment(endDate).format("MMM DD, YYYY"),
+              price: parseInt(product[0]?.price) / 2,
+              clientEmail: user?.email, 
+            });
+          })
+          .then(() => {
+            // Call the cilentsendmail API here
+            return axios.post(
+              "https://camapi-in57.onrender.com/cilentsendmail",
+              {
+                email: user?.email,
+                userName: user?.given_name,
+                price: parseInt(product[0]?.price) / 2,
+                cameramanMail: product[0]?.email,
+              }
+            );
+          })
+          .then((mailResponse) => {
+            setArr([
+              ...arr,
+              {
+                start: startDate,
+                end: endDate,
+              },
+            ]);
+            setStartDate(null);
+            setEndDate(null);
+            setNumberOfDays(0);
+            console.log(mailResponse.data); 
+          })
+          .catch((error) => {
+            console.error(
+              "Error:",
+              error.response ? error.response.data.message : error.message
+            );
+          });
       },
+
       prefill: {
-        //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
-        name: user?.given_name, //your customer's name
+       
+        name: user?.given_name, 
         email: user?.email,
-        contact: "9000000000", //Provide the customer's phone number for better conversion rates
+        contact: "9000000000", 
       },
       notes: {
         address: "CamCrew MNC Office",
@@ -267,6 +358,7 @@ const ServiceDetailsPage = () => {
         color: "#3399cc",
       },
     };
+
     var rzp1 = new window.Razorpay(options);
     rzp1.on("payment.failed", function (response) {
       alert(response.error.code);
@@ -281,7 +373,7 @@ const ServiceDetailsPage = () => {
     e.preventDefault();
   };
   console.log(product[0]?.email);
-  const [arr, setArr] = useState([]);
+
   const fetchExcludedIntervals = async () => {
     try {
       // Fetch data from the API using Axios
@@ -303,6 +395,13 @@ const ServiceDetailsPage = () => {
     } catch (error) {
       console.error("Error:", error.message);
     }
+  };
+
+  const [language, setLanguage] = useState("telugu"); // Default language
+
+  const handleLanguageChange = (e) => {
+    setLanguage(e.target.value);
+    setVirtual(false); // Close the virtual keyboard when language changes
   };
 
   // console.log(arr);
@@ -360,55 +459,7 @@ const ServiceDetailsPage = () => {
                         </div>
                       ))}
 
-                    {/* <div className="w-1/2 p-2 sm:w-1/4">
-                      <a
-                        href="#"
-                        className="block border border-blue-300 dark:border-transparent dark:hover:border-blue-300 hover:border-blue-300"
-                      >
-                        <img
-                          src="https://www.bajajmall.in/emistore/media/catalog/product/placeholder/default/image-not-available_Edit.png"
-                          alt
-                          className="object-cover w-full lg:h-20"
-                        />
-                      </a>
-                    </div>
-
-                    <div className="w-1/2 p-2 sm:w-1/4">
-                      <a
-                        href="#"
-                        className="block border border-transparent dark:border-transparent dark:hover:border-blue-300 hover:border-blue-300"
-                      >
-                        <img
-                          src="https://www.bajajmall.in/emistore/media/catalog/product/placeholder/default/image-not-available_Edit.png"
-                          alt
-                          className="object-cover w-full lg:h-20"
-                        />
-                      </a>
-                    </div>
-                    <div className="w-1/2 p-2 sm:w-1/4">
-                      <a
-                        href="#"
-                        className="block border border-transparent dark:border-transparent dark:hover:border-blue-300 hover:border-blue-300"
-                      >
-                        <img
-                          src="https://www.bajajmall.in/emistore/media/catalog/product/placeholder/default/image-not-available_Edit.png"
-                          alt
-                          className="object-cover w-full lg:h-20"
-                        />
-                      </a>
-                    </div>
-                    <div className="w-1/2 p-2 sm:w-1/4">
-                      <a
-                        href="#"
-                        className="block border border-transparent dark:border-transparent dark:hover:border-blue-300 hover:border-blue-300"
-                      >
-                        <img
-                          src="https://www.bajajmall.in/emistore/media/catalog/product/placeholder/default/image-not-available_Edit.png"
-                          alt
-                          className="object-cover w-full lg:h-20"
-                        />
-                      </a>
-                    </div> */}
+                    {}
                   </div>
                 </div>
               ) : (
@@ -515,29 +566,27 @@ const ServiceDetailsPage = () => {
                         /per day
                       </span>
                     </p>
-                    {
-
-                    }
+                    {/* <p className="text-green-600 dark:text-green-300 ">
+                      {discountPercentage}% off
+                    </p> */}
                   </div>
                 </div>
-                <div className="border p-2 pr-4 rounded-2xl my-4">
-                  <div className="flex ">
-                    <div className="py-3 " >
+                <div className="border w-full p-2 rounded-2xl my-4">
+                  <div className="flex">
+                    <div className="py-3 ">
                       <label>Book From:</label>
+
                       <DatePicker
-                        className="outline w-28 outline-gray-500"
+                        className=" outline w-28 outline-gray-800  "
                         selected={startDate}
                         onChange={handleStartDateChange}
                         excludeDateIntervals={arr}
                       />
-                      {/* {startDate && (
-                        <div>Start Date: {startDate.toLocaleDateString()}</div>
-                      )} */}
                     </div>
-                    <div className="py-3 px-4 text-black ">
+                    <div className="py-3 px-4   ">
                       <label>Book To:</label>
-                      <DatePicker 
-                        className="outline w-28 outline-gray-500"
+                      <DatePicker
+                        className=" outline w-28 outline-gray-800  "
                         selected={endDate}
                         onChange={handleEndDateChange}
                         excludeDateIntervals={arr}
@@ -589,13 +638,13 @@ const ServiceDetailsPage = () => {
                     </div>
                     <div className="space-y-1 md:mr-1 flex flex-col ">
                       <p className=" text-2xl">
-                        Total amount:
+                        Advanced amount:
                         <span className="font-semibold">
                           {" "}
                           ₹{" "}
                           {parseFloat(
                             parseInt(product[0]?.price) * numberOfDays
-                          ).toFixed(2)}{" "}
+                          ).toFixed(2) / 2}{" "}
                         </span>
                       </p>
                       <p className="text-sm md:mr-8 ">
@@ -660,37 +709,63 @@ const ServiceDetailsPage = () => {
           </div>
 
           <div>
-            <form className="flex gap-4 items-center" onSubmit={handleRating}>
-              <div>
-                <img
-                  src={user?.picture}
-                  alt=""
-                  className="w-12 h-12 rounded-full dark:bg-gray-300"
-                />{" "}
-              </div>
-              {isAuthenticated && (
-                <div>
-                  <div className="font-bold"> {user?.given_name} </div>
-                  <MakeStar konsaStar={konsaStar} />
-                  <textarea
-                    id="desc"
-                    value={desc}
-                    onChange={(e) => setDesc(e.target.value)}
-                    className="w-full border rounded py-1 px-2 mb-3"
+            {isAuthenticated && (
+              <div className=" mt-2 ">
+                <select value={language} onChange={handleLanguageChange}>
+                  <option value="telugu">Telugu</option>
+                  <option value="hindi">Hindi</option>
+                </select>
+
+                <button
+                  onClick={() => setVirtual(!isVirtual)}
+                  className="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300"
+                >
+                  {isVirtual ? "Close Keyboard" : "Open Keyboard"}
+                </button>
+
+                {isVirtual && (
+                  <Keyboard
+                    layout={language === "hindi" ? HindiLayout : TeluguLayout}
+                    onChange={onChange}
+                    onKeyPress={onKeyPress}
                   />
-                  <button
-                    type="submit"
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                  >
-                    Send
-                  </button>
-                </div>
-              )}
-            </form>
+                )}
+                <form
+                  className="flex gap-4 items-center"
+                  onSubmit={handleRating}
+                >
+                  <div>
+                    <img
+                      src={user?.picture}
+                      alt=""
+                      className="w-12 h-12 rounded-full dark:bg-gray-300"
+                    />{" "}
+                  </div>
+
+                  <div>
+                    <div className="font-bold"> {user?.given_name} </div>
+                    <MakeStar konsaStar={konsaStar} />
+                    <textarea
+                      id="desc"
+                      value={desc}
+                      onChange={(e) => setDesc(e.target.value)}
+                      className="w-full border rounded py-1 px-2 mb-3"
+                    />
+
+                    <button
+                      type="submit"
+                      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Send
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
           </div>
 
           <div>
-            {ratingArr.reverse().map((item) => (
+            {[...ratingArr].reverse().map((item) => (
               <div key={item._id}>
                 <RatingComp
                   rating={item?.rating}

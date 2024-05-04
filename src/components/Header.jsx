@@ -7,13 +7,15 @@ import { useCart } from "../context/ServiceContext";
 import { Button } from "./Button";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useUser } from "../context/UserContext";
+import { useComparison } from "../context/ComparsionContext";
 // import { CgMenu, CgClose } from "react-icons/cg";
 
 const Header = () => {
   const [isMenu, setMenuOpen] = useState(false);
   const { user, logout, isAuthenticated, isLoading } = useAuth0();
-  const { userData, updateUser } = useUser();
+  const { userData, updateUser, join } = useUser();
   const { loginWithRedirect } = useAuth0();
+  const { selectedProducts } = useComparison();
   const navigate = useNavigate();
   console.log(userData);
 
@@ -39,7 +41,7 @@ const Header = () => {
     if (isAuthenticated && user) {
       fetchUserData();
     }
-  }, [isAuthenticated, user]); // Depend on isAuthenticated and user
+  }, [isAuthenticated, user, join]); // Depend on isAuthenticated and user
 
   const { itemAmount } = useCart();
   const handleToggleMenu = () => {
@@ -72,7 +74,7 @@ const Header = () => {
                   to="/category/media%20videography"
                   className="hover:text-gray-200"
                 >
-                  Collections
+                  Portfolios
                 </Link>
               </li>
               <li>
@@ -96,8 +98,12 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/compare" className="hover:text-gray-200">
-                  Comparison
+                <Link to="/compare" className="hover:text-gray-200 flex gap-2 ">
+                  Compare{" "}
+                  <span className=" bg-bgimage text-gray-900 w-6 h-7 flex justify-center items-center text-sm    rounded-[50%] ">
+                    {" "}
+                    {selectedProducts?.length}{" "}
+                  </span>
                 </Link>
               </li>
             </ul>
@@ -157,9 +163,9 @@ const Header = () => {
               <Button onClick={() => loginWithRedirect()}>Login</Button>
             ) : (
               <div className="flex gap-1 ">
-                <span className="flex text-xl  ">
+                {/* <span className="flex text-xl  ">
                   Hello {user?.given_name}{" "}
-                </span>
+                </span> */}
                 <Button
                   onClick={() =>
                     logout({
@@ -228,11 +234,11 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  to="/category/electronics"
+                  to="/category/MediaVideography"
                   onClick={handleToggleMenu}
                   className="hover:text-gray-200"
                 >
-                  Collections
+                  Portfolios
                 </Link>
               </li>
               <li>
@@ -268,11 +274,7 @@ const Header = () => {
                   Add Service
                 </Link>
               </li>
-              <li onClick={handleToggleMenu}>
-                <Link to="/compare" className="hover:text-gray-200">
-                  Comparison
-                </Link>
-              </li>
+              {}
             </ul>
           </div>
         )}
