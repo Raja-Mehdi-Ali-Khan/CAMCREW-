@@ -174,7 +174,7 @@ const EditProfilePage = () => {
               >
                 <FormSection
                   title="Personal Information"
-                  description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci fuga autem eum!"
+                  description="Enter Vallid Details Only"
                 >
                   <FormField
                     label="First name"
