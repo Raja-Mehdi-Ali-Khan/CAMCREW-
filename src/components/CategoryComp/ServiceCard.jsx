@@ -17,7 +17,7 @@ const ServiceCard = ({ product }) => {
     e.stopPropagation(); // Stop the event propagation here
 
     if (isAuthenticated) {
-      addToCart(product, product?.id);
+      addToCart(product, product?._id);
     } else {
       setShowModal(true);
     }

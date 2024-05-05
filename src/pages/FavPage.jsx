@@ -38,14 +38,14 @@ const FavPage = () => {
       {cart && cart?.length === 0 ? (
         <div className="flex items-center justify-center min-h-80">
           <p className="ml-2 text-xl font-semibold text-gray-100">
-            Your cart is empty.
+            Your Favourite list is empty.
           </p>
         </div>
       ) : (
         <div className="flex flex-col md:p-10">
           <div className="m-10">
             {cart.map((item) => (
-              <div className="m-2" key={item.id}>
+              <div className="m-2" key={item._id}>
                 <CartCard item={item} />
               </div>
             ))}
@@ -53,7 +53,7 @@ const FavPage = () => {
           <div className="space-y-1 text-white flex flex-col items-center md:items-end md:text-right">
             <p className="md:mr-10 text-2xl">
               Total amount:
-              <span className="font-semibold"> ${total.toFixed(2)} </span>
+              <span className="font-semibold"> ₹{total.toFixed(2)} </span>
             </p>
             <p className="text-sm md:mr-8 ">
               Not including taxes and shipping costs

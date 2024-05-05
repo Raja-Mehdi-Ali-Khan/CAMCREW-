@@ -31,10 +31,10 @@ const CartCard = ({ item }) => {
 
             <div className="flex  items-center justify-between gap-x-2 h-[36px]">
               <div className=" text-white font-semibold ">
-                $ {price} X {quantity}{" "}
+              ₹ {price}
               </div>
               <div className=" text-white font-medium">
-                $ {parseFloat(price * quantity).toFixed(2)}
+              ₹ {parseFloat(price * quantity).toFixed(2)}
               </div>
             </div>
           </div>

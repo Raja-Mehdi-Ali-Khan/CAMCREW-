@@ -24,14 +24,14 @@ const CartProvider = ({ children }) => {
     });
 
     if (cartItem) {
-      const newCart = [...cart].map((item) => {
-        if (item._id === id) {
-          return { ...item, quantity: cartItem.quantity + 1 };
-        } else {
-          return item;
-        }
-      });
-      setCart(newCart);
+      // const newCart = [...cart].map((item) => {
+      //   if (item._id === id) {
+      //     return { ...item, quantity: cartItem.quantity + 1 };
+      //   } else {
+      //     return item;
+      //   }
+      // });
+      // setCart(newCart);
     } else {
       setCart([...cart, newItem]);
     }
