@@ -15,7 +15,7 @@ import Form from "./pages/Form";
 import User from "./pages/User";
 import EditProfilePage from "./pages/User";
 import AddCam from "./pages/AddCam";
-import RCalendar from "./components/Calendar";
+// import RCalendar from "./components/Calendar";
 import ComparisonPage from "./pages/Compare";
 import { ComparisonProvider } from "./context/ComparsionContext";
 import { UserProvider } from "./context/UserContext";
@@ -68,7 +68,7 @@ const App = () => {
                   <Route path="/form" element={<Form />} />
                   <Route path="/edituser" element={<EditProfilePage />} />
                   <Route path="/add" element={<AddCam />} />
-                  <Route path="/cal" element={<RCalendar />} />
+                  {/* <Route path="/cal" element={<RCalendar />} /> */}
                   <Route path="/compare" element={<ComparisonPage />} />
                 </Routes>
                 <Footer />

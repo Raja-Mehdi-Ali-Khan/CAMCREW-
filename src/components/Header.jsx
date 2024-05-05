@@ -209,6 +209,7 @@ const Header = () => {
           </button>
         </nav>
       </section>
+      {/* for phone display */}
       <div className=" absolute top-[4rem]  right-2 ">
         {" "}
         {isMenu && (
