@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useCart } from "../context/ServiceContext";
-import CartCard from "../components/CartComp/CartCard";
+import FavCard from "../components/CartComp/FavCard";
 
 const FavPage = () => {
   const { cart, total, setCart } = useCart();
@@ -46,7 +46,7 @@ const FavPage = () => {
           <div className="m-10">
             {cart.map((item) => (
               <div className="m-2" key={item._id}>
-                <CartCard item={item} />
+                <FavCard item={item} />
               </div>
             ))}
           </div>

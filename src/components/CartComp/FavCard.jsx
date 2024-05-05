@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IoMdAdd, IoMdClose, IoMdRemove } from "react-icons/io";
 
-const CartCard = ({ item }) => {
+const FavCard = ({ item }) => {
   const { removeFromCart, increaseAmount, decreaseAmount } = useCart();
   const { _id, title, image, price, quantity } = item;
 
@@ -44,4 +44,4 @@ const CartCard = ({ item }) => {
   );
 };
 
-export default CartCard;
+export default FavCard;
