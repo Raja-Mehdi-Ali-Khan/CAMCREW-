@@ -19,15 +19,14 @@ const FavPage = () => {
         console.warn(`Error parsing JSON from local storage: ${err}`);
       }
     }
-  }, [setCart]); // Only run on initial render
+  }, [setCart]);
 
   useEffect(() => {
     localStorage.setItem("cartvalue", JSON.stringify(cart));
-  }, [cart]); // Run when cart changes
+  }, [cart]);
 
   const clearCart = () => {
     localStorage.setItem("cartvalue", []);
-    // localStorage.removeItem("cartko");
     setCart([]);
   };
 

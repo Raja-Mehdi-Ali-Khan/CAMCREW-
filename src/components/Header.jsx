@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Logo from "../assets/shopping-cart.png";
+// import Logo from "../assets/shopping-cart.png";
 import { FiShoppingCart } from "react-icons/fi";
 import { FaStar } from "react-icons/fa6";
 import { Link, Navigate, useNavigate } from "react-router-dom";
