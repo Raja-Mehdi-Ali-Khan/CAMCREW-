@@ -11,7 +11,7 @@ export const ComparisonProvider = ({ children }) => {
   const addProduct = (product) => {
 
     if (selectedProducts.length === 2) {
-      console.log("Already selected two products for comparison");
+      alert("Already selected two products for comparison");
       return;
     }
 
