@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { BsTable } from "react-icons/bs";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export const ServiceContext = createContext();
 
@@ -23,9 +22,7 @@ const CartProvider = ({ children }) => {
       return item._id === id;
     });
 
-    if (cartItem) {
-      
-    } else {
+    if (!cartItem) {
       setCart([...cart, newItem]);
     }
   };

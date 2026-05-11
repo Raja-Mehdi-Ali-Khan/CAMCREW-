@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 export const FilterContext = createContext();
 
@@ -34,7 +34,7 @@ const FilterProvider = ({ children }) => {
     );
   };
 
-  const applyFilters = (categoryProducts, filters) => {
+  const applyFilters = useCallback((categoryProducts, filters) => {
     // Apply existing filters to the products
     let filteredProducts = [...categoryProducts];
 
@@ -63,7 +63,7 @@ const FilterProvider = ({ children }) => {
     }
 
     return filteredProducts;
-  };
+  }, []);
 
   return (
     <FilterContext.Provider

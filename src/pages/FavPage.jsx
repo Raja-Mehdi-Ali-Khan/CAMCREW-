@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useCart } from "../context/ServiceContext";
 import FavCard from "../components/CartComp/FavCard";
 
@@ -13,7 +13,7 @@ const FavPage = () => {
     if (localArray && localArray.length != 0) {
       try {
         const storedCart = JSON.parse(storedCartJSON);
-        setCart([...storedCart, ...cart]);
+        setCart((currentCart) => [...storedCart, ...currentCart]);
         console.log(storedCart);
       } catch (err) {
         console.warn(`Error parsing JSON from local storage: ${err}`);

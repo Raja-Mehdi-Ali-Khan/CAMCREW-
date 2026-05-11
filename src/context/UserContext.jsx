@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 export const UserContext = createContext();
 
@@ -9,9 +9,9 @@ export const UserProvider = ({ children }) => {
   const [userData, setUser] = useState(null);
   const [join, setJoin] = useState(false);
 
-  const updateUser = (userData) => {
+  const updateUser = useCallback((userData) => {
     setUser(userData);
-  };
+  }, []);
 
   return (
     <UserContext.Provider value={{ userData, updateUser, join, setJoin }}>

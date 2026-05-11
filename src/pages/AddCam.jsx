@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import ImageUploader from "../components/ImageUploader";
 import { useUser } from "../context/UserContext";
+import { apiUrl } from "../config/api";
 
 const AddCam = () => {
-  const [singleFile, setSingleFile] = useState(null);
   const [formData, setFormData] = useState({});
-  const [files, setFiles] = useState([]);
-  const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imageUrls, setImageUrls] = useState([]);
   const { userData } = useUser();
@@ -16,10 +14,7 @@ const AddCam = () => {
   const handleSubmit = async () => {
     try {
 
-      const response = await axios.post(
-        "https://camapi-in57.onrender.com/api/items",
-        formData
-      );
+      const response = await axios.post(apiUrl("/api/items"), formData);
       console.log(response.data);
       setFormData({});
       alert("Added a Service");
@@ -42,15 +37,12 @@ const AddCam = () => {
     try {
       const uploadedUrls = [];
       for (const index in imageUrls) {
-        if (imageUrls.hasOwnProperty(index)) {
+        if (Object.prototype.hasOwnProperty.call(imageUrls, index)) {
           const file = imageUrls[index];
           const formData = new FormData();
           formData.append("image", file);
 
-          const response = await axios.post(
-            "https://camapi-in57.onrender.com/upload",
-            formData
-          );
+          const response = await axios.post(apiUrl("/upload"), formData);
 
           const uploadedUrl = response.data.data.url;
           uploadedUrls.push(uploadedUrl);
@@ -91,10 +83,6 @@ const AddCam = () => {
     } else {
       setYoutubeId("");
     }
-  };
-
-  const handleFeature = (e) => {
-    e.preventDefault();
   };
 
   useEffect(() => {

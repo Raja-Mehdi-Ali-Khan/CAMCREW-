@@ -1,11 +1,10 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { ToastContainer } from "react-toastify";
+import { Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import User from "./pages/User.jsx";
 
 // import CartProvider from "./context/ProductContext.jsx";
 
@@ -30,7 +29,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       draggable
       pauseOnHover
       theme="dark"
-      transition:Bounce
+      transition={Bounce}
     />
   </Auth0Provider>
   // </React.StrictMode>

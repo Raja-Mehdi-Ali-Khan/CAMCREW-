@@ -1,10 +1,8 @@
 import { useCart } from "../../context/ServiceContext";
-import React from "react";
-import { Link } from "react-router-dom";
-import { IoMdAdd, IoMdClose, IoMdRemove } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 
 const FavCard = ({ item }) => {
-  const { removeFromCart, increaseAmount, decreaseAmount } = useCart();
+  const { removeFromCart } = useCart();
   const { _id, title, image, price, quantity } = item;
 
   return (

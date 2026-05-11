@@ -1,24 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { subDays, addDays } from "date-fns";
 import moment from "moment";
 import { toast, Bounce } from "react-toastify";
 
-import { list } from "../data";
 import Star from "../components/CategoryComp/Star";
 import { useCart } from "../context/ServiceContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import MakeStar from "../components/CategoryComp/MakeStar";
 import axios from "axios";
 import RatingComp from "../components/RatingComp";
-import { IoMdAdd, IoMdClose, IoMdRemove } from "react-icons/io";
-import Calendar from "react-calendar";
 import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
-// import "simple-keyboard-layouts/build/css/index.css";
-import { TeluguLayout } from "simple-keyboard-layouts";
+import { apiUrl } from "../config/api";
+import LoginRequiredModal from "../components/LoginRequiredModal";
 // import TeluguKeyboard from "../components/TeluguKeyBoard";
 const ServiceDetailsPage = () => {
   const { addToCart } = useCart();
@@ -76,9 +72,7 @@ const ServiceDetailsPage = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "https://camapi-in57.onrender.com/api/items"
-      );
+      const response = await axios.get(apiUrl("/api/items"));
       // console.log(response.data);
       setList(response.data);
     } catch (error) {
@@ -87,17 +81,15 @@ const ServiceDetailsPage = () => {
       setLoading(false);
     }
   };
-  const product = list.filter((item) => item._id == productId);
+  const selectedProduct = list.find((item) => item._id === productId);
+  const product = selectedProduct ? [selectedProduct] : [];
+  const productEmail = selectedProduct?.email;
 
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
   const [state, setState] = useState(false);
   const [numberOfDays, setNumberOfDays] = useState(0);
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-
-  const [excludedIntervals, setExcludedIntervals] = useState([]);
 
   const handleStartDateChange = (date) => {
     setStartDate(date);
@@ -138,16 +130,6 @@ const ServiceDetailsPage = () => {
   }, [numberOfDays]);
 
 
-  const handleCheckInChange = (ev) => {
-    setCheckIn(ev.target.value);
-    // calculateNumberOfDays();
-  };
-
-  const handleCheckOutChange = (ev) => {
-    setCheckOut(ev.target.value);
-    // calculateNumberOfDays();
-  };
-
   const [rating, setRating] = useState("");
 
 
@@ -164,9 +146,7 @@ const ServiceDetailsPage = () => {
     const fetchRatingData = async () => {
       try {
        
-        const response = await axios.get(
-          `https://camapi-in57.onrender.com/api/rating/rat/${productId}`
-        );
+        const response = await axios.get(apiUrl(`/api/rating/rat/${productId}`));
         const { averageRating, count } = response.data;
         // Update state with the received data
         setAverageRating(averageRating || 0);
@@ -180,20 +160,18 @@ const ServiceDetailsPage = () => {
     fetchRatingData(); // Call the function to fetch rating data when component mounts
   }, [productId]);
 
-  const fetchRating = async () => {
+  const fetchRating = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `https://camapi-in57.onrender.com/api/rating/${productId}`
-      );
+      const response = await axios.get(apiUrl(`/api/rating/${productId}`));
       // console.log(response);
       setRatingArr(response.data);
     } catch (error) {
       console.error(error.message);
     }
-  };
+  }, [productId]);
   useEffect(() => {
     fetchRating();
-  }, [productId, Loading, state]);
+  }, [productId, Loading, state, fetchRating]);
 
   // console.log(ratingArr);
   useEffect(() => {
@@ -204,18 +182,8 @@ const ServiceDetailsPage = () => {
   // console.log(product);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const { user, logout, isAuthenticated, isLoading } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
   const discountedPrice = parseInt(product[0]?.price);
-  const originalPriceRef = useRef(
-    discountedPrice + Math.random().toFixed(2) * 100 + 100
-  );
-  // console.log(originalPriceRef);
-
-  const discountPercentage = Math.round(
-    ((originalPriceRef.current - discountedPrice) / originalPriceRef.current) *
-      100
-  );
-
   const handleAddToCartClick = () => {
     if (isAuthenticated) {
       addToCart(product[0], product[0]?._id);
@@ -228,17 +196,14 @@ const ServiceDetailsPage = () => {
   const handleRating = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "https://camapi-in57.onrender.com/api/rating",
-        {
-          rating,
-          desc,
-          productId: productId,
-          userName: user?.given_name,
-          userImage: user?.picture,
-          count: 1,
-        }
-      );
+      await axios.post(apiUrl("/api/rating"), {
+        rating,
+        desc,
+        productId: productId,
+        userName: user?.given_name,
+        userImage: user?.picture,
+        count: 1,
+      });
       setRating("");
       setDesc("");
       setState(!state);
@@ -262,7 +227,7 @@ const ServiceDetailsPage = () => {
   // console.log(product);
 
   const paymentHandler = async (e) => {
-    const response = await fetch("https://camapi-in57.onrender.com/order", {
+    const response = await fetch(apiUrl("/order"), {
       method: "POST",
       body: JSON.stringify({
         amount: (parseInt(product[0]?.price * numberOfDays) * 100) / 2,
@@ -277,7 +242,9 @@ const ServiceDetailsPage = () => {
     // console.log(order);
 
     var options = {
-      key: import.meta.env.REACT_APP_RAZORPAY_KEY_ID,
+      key:
+        import.meta.env.VITE_RAZORPAY_KEY_ID ||
+        import.meta.env.REACT_APP_RAZORPAY_KEY_ID,
       amount: (parseInt(product[0]?.price) * 100) / 2,
       currency: "INR",
       name: "CamCrew",
@@ -287,7 +254,7 @@ const ServiceDetailsPage = () => {
       handler: function (response) {
         const body = { ...response };
 
-        fetch("https://camapi-in57.onrender.com/order/validate", {
+        fetch(apiUrl("/order/validate"), {
           method: "POST",
           body: JSON.stringify(body),
           headers: {
@@ -297,20 +264,17 @@ const ServiceDetailsPage = () => {
           .then((validateRes) => validateRes.json())
           .then((jsonRes) => {
             if (jsonRes.msg === "success" && startDate && endDate) {
-              return axios.put(
-                "https://camapi-in57.onrender.com/update-excluded-intervals",
-                {
-                  email: product[0]?.email, 
-                  start: startDate,
-                  end: endDate,
-                }
-              );
+              return axios.put(apiUrl("/update-excluded-intervals"), {
+                email: product[0]?.email,
+                start: startDate,
+                end: endDate,
+              });
             } else {
               throw new Error("Validation failed or missing start/end dates");
             }
           })
           .then(() => {
-            return axios.post("https://camapi-in57.onrender.com/sendmail", {
+            return axios.post(apiUrl("/sendmail"), {
               email: product[0]?.email, 
               startDate: moment(startDate).format("MMM DD, YYYY"), 
               endDate: moment(endDate).format("MMM DD, YYYY"),
@@ -321,7 +285,7 @@ const ServiceDetailsPage = () => {
           .then(() => {
             // Call the cilentsendmail API here
             return axios.post(
-              "https://camapi-in57.onrender.com/cilentsendmail",
+              apiUrl("/cilentsendmail"),
               {
                 email: user?.email,
                 userName: user?.given_name,
@@ -380,11 +344,11 @@ const ServiceDetailsPage = () => {
   };
   console.log(product[0]?.email);
 
-  const fetchExcludedIntervals = async () => {
+  const fetchExcludedIntervals = useCallback(async () => {
     try {
       // Fetch data from the API using Axios
       const response = await axios.get(
-        `https://camapi-in57.onrender.com/get-excluded-intervals/${product[0]?.email}`
+        apiUrl(`/get-excluded-intervals/${productEmail}`)
       );
 
       // Extract excludedIntervals from the response data
@@ -401,7 +365,7 @@ const ServiceDetailsPage = () => {
     } catch (error) {
       console.error("Error:", error.message);
     }
-  };
+  }, [productEmail]);
 
   const [language, setLanguage] = useState("telugu"); // Default language
 
@@ -414,10 +378,10 @@ const ServiceDetailsPage = () => {
   // console.log("Mera ", new Date("2024-05-10"));
 
   useEffect(() => {
-    if (product[0]?.email) {
+    if (productEmail) {
       fetchExcludedIntervals();
     }
-  }, [list]);
+  }, [fetchExcludedIntervals, productEmail]);
 
   return (
     <>
@@ -668,52 +632,23 @@ const ServiceDetailsPage = () => {
                     >
                       Add to Fav
                     </button>
-                    {showModal ? (
-                      <>
-                        <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                          <div className="relative w-auto my-6 mx-auto max-w-3xl">
-                            {/*content*/}
-                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                              {/*header*/}
-                              <div className="flex items-start justify-between p-5  rounded-t">
-                                <h3 className="text-3xl font-semibold">
-                                  Please Login with Your Account
-                                </h3>
-                              </div>
-
-                              <div className="flex items-center justify-center p-4  rounded-b">
-                                <button
-                                  className="text-gray-900 bg-bgimage background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setShowModal(false);
-                                  }}
-                                >
-                                  Okay
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-                      </>
-                    ) : null}
+                    <LoginRequiredModal
+                      open={showModal}
+                      onClose={(e) => {
+                        e.stopPropagation();
+                        setShowModal(false);
+                      }}
+                    />
                   </div>
                   <div className="w-full px-4 mb-4 lg:mb-0 lg:w-1/2">
                     <button
-                      // onClick={paymentHandler }
-                      onClick={ (e) => { 
-
+                      onClick={(e) => {
                         if (isAuthenticated) {
-                              paymentHandler(e);
-                            } else {
-                              setShowModal(true);
-                            }
-                        
-                        
-                         }  }
-                      // onClick={handleCheckout}
+                          paymentHandler(e);
+                        } else {
+                          setShowModal(true);
+                        }
+                      }}
                       className="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300"
                     >
                       Checkout

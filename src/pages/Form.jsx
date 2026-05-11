@@ -1,10 +1,10 @@
-import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import * as Yup from "yup";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { useUser } from "../context/UserContext";
+import { apiUrl } from "../config/api";
 
 const validationSchema = Yup.object().shape({
   firstname: Yup.string().required("First name is required"),
@@ -40,51 +40,6 @@ const FormField = ({ label, id, type, placeholder }) => {
   );
 };
 
-const TextAreaField = ({ label, id, placeholder }) => {
-  return (
-    <div className="col-span-full">
-      <label htmlFor={id} className="text-sm">
-        {label}
-      </label>
-      <Field
-        as="textarea"
-        id={id}
-        name={id}
-        placeholder={placeholder}
-        className="w-full rounded-md focus:ring text-black focus:ring-opacity-75 "
-      />
-      <ErrorMessage
-        name={id}
-        component="div"
-        className="text-red-500 text-sm"
-      />
-    </div>
-  );
-};
-
-const ImageUpload = () => {
-  return (
-    <div className="col-span-full">
-      <label htmlFor="photo" className="text-sm">
-        Photo
-      </label>
-      <div className="flex items-center space-x-2">
-        <img
-          src="https://source.unsplash.com/30x30/?random"
-          alt=""
-          className="w-10 h-10 rounded-full "
-        />
-        <button
-          type="button"
-          className="px-4 py-2 border rounded-md "
-        >
-          Change
-        </button>
-      </div>
-    </div>
-  );
-};
-
 const FormSection = ({ title, description, children }) => {
   return (
     <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm ">
@@ -100,7 +55,7 @@ const FormSection = ({ title, description, children }) => {
 };
 
 const FormComponent = () => {
-  const { user, logout, isAuthenticated, isLoading } = useAuth0();
+  const { user } = useAuth0();
   const { join, setJoin } = useUser();
   console.log(user);
   console.log(user?.email);
@@ -124,10 +79,10 @@ const FormComponent = () => {
           onSubmit={async (values, { setSubmitting }) => {
             try {
 
-              const response = await axios.post(
-                "https://camapi-in57.onrender.com/api/users",
-                { ...values, isCameraman: true }
-              );
+              const response = await axios.post(apiUrl("/api/users"), {
+                ...values,
+                isCameraman: true,
+              });
 
               console.log(response.data);
               setSubmitting(false);
@@ -144,7 +99,7 @@ const FormComponent = () => {
             }
           }}
         >
-          {(formikProps) => (
+          {() => (
             <Form
               noValidate=""
               className="container flex flex-col mx-auto space-y-12"

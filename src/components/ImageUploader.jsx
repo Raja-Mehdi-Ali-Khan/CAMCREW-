@@ -1,33 +1,20 @@
-import React, { useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 
 const ImageUploader = ({ index, onUpload }) => {
-  //   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
+    if (!selectedFile) return;
+
     setPreviewUrl(URL.createObjectURL(selectedFile));
     onUpload(index, selectedFile);
-  };
-
-  const handleUpload = async () => {
-    setLoading(true);
-    try {
-     
-      onUpload(file);
-    } catch (error) {
-      console.error("Upload error:", error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
     <div className="flex flex-col gap-y-4">
       <label htmlFor="cover" className="text-white text-lg">
-        {`${index == 0 ? "Main" : "Upload"}`} Image
+        {`${index === 0 ? "Main" : "Upload"}`} Image
       </label>
       <input
         type="file"

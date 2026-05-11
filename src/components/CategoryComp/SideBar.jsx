@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Star from "./Star";
 import { categories } from "../../data";
 import { Link } from "react-router-dom";
@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useFilter } from "../../context/FilterContext";
 import axios from "axios";
+import { apiUrl } from "../../config/api";
 
 export const AccordionItem = ({ title, content, index }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -43,8 +44,6 @@ export const AccordionItem = ({ title, content, index }) => {
 
 const SideBar = ({ category }) => {
   const {
-    products,
-    setProducts,
     ascSort,
     descSort,
     filters,
@@ -54,13 +53,7 @@ const SideBar = ({ category }) => {
     sort,
     setSort,
   } = useFilter();
-  const [slider, setSlider] = useState();
-
   const priceOptions = ["4000", "2500", "1000"];
-
-  const [selectedPrice, setSelectedPrice] = useState(null);
-
-  const [selectedRating, setSelectedRating] = useState(null);
 
   const [states, setStates] = useState([]);
   const [selectedState, setSelectedState] = useState("");
@@ -68,7 +61,7 @@ const SideBar = ({ category }) => {
   useEffect(() => {
   
     axios
-      .get("https://camapi-in57.onrender.com/api/states")
+      .get(apiUrl("/api/states"))
       .then((response) => {
         setStates(response.data.states);
       })
@@ -85,12 +78,10 @@ const SideBar = ({ category }) => {
 
   const handleRatingChange = (rating) => {
     setFilters({ ...filters, rating });
-    setSelectedRating(rating);
   };
 
   const handlePriceChange = (price) => {
     setFilters({ ...filters, price });
-    setSelectedPrice(price);
    
   };
 

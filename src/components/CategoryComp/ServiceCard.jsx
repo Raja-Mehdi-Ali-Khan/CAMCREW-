@@ -1,16 +1,17 @@
 import { useCart } from "../../context/ServiceContext";
-import React, { useState } from "react";
+import { useState } from "react";
 import Star from "./Star";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useComparison } from "../../context/ComparsionContext";
 import { toast, Bounce } from "react-toastify";
+import LoginRequiredModal from "../LoginRequiredModal";
 
 const ServiceCard = ({ product }) => {
   const { addToCart } = useCart();
   const [showModal, setShowModal] = useState(false);
   const { addProduct } = useComparison();
-  const { user, logout, isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   const navigate = useNavigate();
   // console.log(isAuthenticated);
   const handleAddToCartClick = (e) => {
@@ -101,37 +102,13 @@ const ServiceCard = ({ product }) => {
                 Add to Fav.
               </p>
             </div>
-            {showModal ? (
-              <>
-                <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                  <div className="relative w-auto my-6 mx-auto max-w-3xl">
-                    {/*content*/}
-                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                      {/*header*/}
-                      <div className="flex items-start justify-between p-5  rounded-t">
-                        <h3 className="text-3xl font-semibold">
-                          Please Login with Your Account
-                        </h3>
-                      </div>
-
-                      <div className="flex items-center justify-center p-4  rounded-b">
-                        <button
-                          className="text-gray-900 bg-bgimage background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setShowModal(false);
-                          }}
-                        >
-                          Okay
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-              </>
-            ) : null}
+            <LoginRequiredModal
+              open={showModal}
+              onClose={(e) => {
+                e.stopPropagation();
+                setShowModal(false);
+              }}
+            />
             {/* </div> */}
           </div>
         </div>

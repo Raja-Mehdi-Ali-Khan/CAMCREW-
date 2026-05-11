@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Home from "./pages/Home";
@@ -8,11 +8,9 @@ import ServiceDetailsPage from "./pages/ServiceDetailsPage";
 
 import Footer from "./components/Footer";
 import CartProvider from "./context/ServiceContext";
-import bgImage from "../src/assets/bgimage.jpg";
 import FilterProvider from "./context/FilterContext";
 import Header from "./components/Header";
 import Form from "./pages/Form";
-import User from "./pages/User";
 import EditProfilePage from "./pages/User";
 import AddCam from "./pages/AddCam";
 // import RCalendar from "./components/Calendar";
@@ -43,11 +41,6 @@ const App = () => {
   }, []);
   return (
     <>
-      {/* <User /> */}
-      <div
-        id="google_translate_element"
-        className=" absolute top-0   z-10 "
-      ></div>
       <UserProvider>
         <FilterProvider>
           <ComparisonProvider>

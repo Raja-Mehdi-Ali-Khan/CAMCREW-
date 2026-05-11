@@ -1,4 +1,3 @@
-import React from "react";
 import Star from "./CategoryComp/Star";
 
 const RatingComp = ({ rating, userName, userImage, text }) => {

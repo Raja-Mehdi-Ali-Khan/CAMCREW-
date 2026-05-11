@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+import { apiUrl } from "../config/api";
 
 const validationSchema = Yup.object().shape({
   firstname: Yup.string().required("First name is required"),
@@ -41,51 +42,6 @@ const FormField = ({ label, id, type, placeholder }) => {
   );
 };
 
-const TextAreaField = ({ label, id, placeholder }) => {
-  return (
-    <div className="col-span-full">
-      <label htmlFor={id} className="text-sm">
-        {label}
-      </label>
-      <Field
-        as="textarea"
-        id={id}
-        name={id}
-        placeholder={placeholder}
-        className="w-full rounded-md focus:ring text-black focus:ring-opacity-75"
-      />
-      <ErrorMessage
-        name={id}
-        component="div"
-        className="text-red-500 text-sm"
-      />
-    </div>
-  );
-};
-
-const ImageUpload = () => {
-  return (
-    <div className="col-span-full">
-      <label htmlFor="photo" className="text-sm">
-        Photo
-      </label>
-      <div className="flex items-center space-x-2">
-        <img
-          src="https://source.unsplash.com/30x30/?random"
-          alt=""
-          className="w-10 h-10 rounded-full"
-        />
-        <button
-          type="button"
-          className="px-4 py-2 border rounded-md "
-        >
-          Change
-        </button>
-      </div>
-    </div>
-  );
-};
-
 const FormSection = ({ title, description, children }) => {
   return (
     <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm ">
@@ -102,33 +58,31 @@ const FormSection = ({ title, description, children }) => {
 
 const EditProfilePage = () => {
   const [userData, setUserData] = useState(null);
-  const { user, logout, isAuthenticated, isLoading } = useAuth0();
+  const { user } = useAuth0();
   console.log(user);
   console.log(user?.email);
 
-  useEffect(() => {
-    // Fetch user data from the backend
-    fetchUserData();
-  }, []);
-
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `https://camapi-in57.onrender.com/api/users/email/${user?.email}`
-      );
+      const response = await axios.get(apiUrl(`/api/users/email/${user?.email}`));
       const data = response.data;
       console.log(data);
       setUserData(data);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
-  };
+  }, [user?.email]);
+
+  useEffect(() => {
+    // Fetch user data from the backend
+    fetchUserData();
+  }, [fetchUserData]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       // Send updated user data to the backend
       const response = await axios.put(
-        `https://camapi-in57.onrender.com/api/users/email/${user?.email}`,
+        apiUrl(`/api/users/email/${user?.email}`),
         values
       );
       if (response.status === 200) {
@@ -167,7 +121,7 @@ const EditProfilePage = () => {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {(formikProps) => (
+            {() => (
               <Form
                 noValidate=""
                 className="container flex flex-col mx-auto space-y-12"

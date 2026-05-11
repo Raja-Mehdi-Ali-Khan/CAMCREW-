@@ -1,10 +1,11 @@
-import React from "react";
 import { useComparison } from "../context/ComparsionContext";
 import Star from "../components/CategoryComp/Star";
 import { Button } from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 const ComparisonPage = () => {
   const { selectedProducts, clearComparison, removeProduct } = useComparison();
+  const navigate = useNavigate();
   console.log(selectedProducts);
   // Render the comparison table if there are two selectedProducts selected for comparison
   const renderComparisonTable = () => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 // import { NavLink } from "react-router-dom";
 // import { Button } from "../styles/Button";
@@ -36,7 +36,7 @@ const HeroSection = () => {
         alt="Background Image"
       />
       <p className=" text-black flex  flex-col   justify-start items-end p-[10%] h-screen  ">
-        <h1 class="mb-4  text-5xl md:text-6xl lg:text-7xl flex flex-col md:items-center md:justify-center font-extrabold leading-none  text-gray-900 ">
+        <h1 className="mb-4  text-5xl md:text-6xl lg:text-7xl flex flex-col md:items-center md:justify-center font-extrabold leading-none  text-gray-900 ">
           <div className="flex flex-col md:flex-row md:gap-4  text-5xl  md:text-5xl lg:text-6xl ">
             <div>Curated </div>
             {/* <span class="text-blue-600   dark:text-blue-500">Collections</span> */}

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link, useParams } from "react-router-dom";
-import { list } from "../data";
 import ServiceCard from "../components/CategoryComp/ServiceCard";
 import { Button } from "../components/Button";
 import SideBar from "../components/CategoryComp/SideBar";
 import { useFilter } from "../context/FilterContext";
 import axios from "axios";
+import { apiUrl } from "../config/api";
 
 const CategoryPage = () => {
   const { categoryId } = useParams();
@@ -22,9 +22,7 @@ const CategoryPage = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        "https://camapi-in57.onrender.com/api/items"
-      );
+      const response = await axios.get(apiUrl("/api/items"));
       console.log(response.data);
       setList(response.data);
     } catch (error) {
@@ -35,7 +33,7 @@ const CategoryPage = () => {
   useEffect(() => {
     setProducts([]);
     fetchData(); // Call the async function
-  }, [categoryId, filters, isDesktop]);
+  }, [categoryId, filters, isDesktop, setProducts]);
 
   useEffect(() => {
     // Filter products based on category after list is updated
@@ -45,14 +43,12 @@ const CategoryPage = () => {
 
     // Create an array to store all the promises for fetching rating data
     const fetchRatingPromises = categoryProducts.map((product) =>
-      axios.get(
-        `https://camapi-in57.onrender.com/api/rating/rat/${product?._id}`
-      )
+      axios.get(apiUrl(`/api/rating/rat/${product?._id}`))
     );
 
     // Create an array to store all the promises for fetching state data
     const fetchStatePromises = categoryProducts.map((product) =>
-      axios.get(`https://camapi-in57.onrender.com/state/${product.email}`)
+      axios.get(apiUrl(`/state/${product.email}`))
     );
 
     // Use Promise.all to wait for all API requests to complete
@@ -87,7 +83,7 @@ const CategoryPage = () => {
         // If there's an error, set products to an empty array or handle as needed
         setProducts([]);
       });
-  }, [list, categoryId, filters, isDesktop]);
+  }, [list, categoryId, filters, isDesktop, applyFilters, setProducts]);
 
   useEffect(() => {
     console.log(products);
