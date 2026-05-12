@@ -17,7 +17,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer id="footer" className="bg-footer_bg text-white">
+    <footer id="footer" className="bg-footer_bg text-white border-t border-white/5">
       <div className="w-full px-5 py-5 sm:px-8 lg:px-10 lg:py-6">
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-[1.05fr_1fr_0.5fr_1fr] lg:items-start lg:gap-6">
           <div>
@@ -94,10 +94,10 @@ const Footer = () => {
               <div>
                 <p className="font-bold text-white">Mail us</p>
                 <a
-                  href="mailto:epicscamcrew@gmail.com"
+                  href="mailto:rajghaznavi7@gmail.com"
                   className="break-all hover:text-bgimage"
                 >
-                  epicscamcrew@gmail.com
+                  rajghaznavi7@gmail.com
                 </a>
               </div>
             </div>

@@ -46,25 +46,29 @@ const App = () => {
           <ComparisonProvider>
             <CartProvider>
               <Router>
-                <Header />
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route
-                    path="/category/:categoryId"
-                    element={<CategoryPage />}
-                  />
-                  <Route
-                    path="/product/:productId"
-                    element={<ServiceDetailsPage />}
-                  />
-                  <Route path="/cart" element={<FavPage />} />
-                  <Route path="/form" element={<Form />} />
-                  <Route path="/edituser" element={<EditProfilePage />} />
-                  <Route path="/add" element={<AddCam />} />
-                  {/* <Route path="/cal" element={<RCalendar />} /> */}
-                  <Route path="/compare" element={<ComparisonPage />} />
-                </Routes>
-                <Footer />
+                <div className="flex flex-col min-h-screen bg-[rgb(22,21,21)]">
+                  <Header />
+                  <main className="flex-grow">
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route
+                        path="/category/:categoryId"
+                        element={<CategoryPage />}
+                      />
+                      <Route
+                        path="/product/:productId"
+                        element={<ServiceDetailsPage />}
+                      />
+                      <Route path="/cart" element={<FavPage />} />
+                      <Route path="/form" element={<Form />} />
+                      <Route path="/edituser" element={<EditProfilePage />} />
+                      <Route path="/add" element={<AddCam />} />
+                      {/* <Route path="/cal" element={<RCalendar />} /> */}
+                      <Route path="/compare" element={<ComparisonPage />} />
+                    </Routes>
+                  </main>
+                  <Footer />
+                </div>
               </Router>
             </CartProvider>
           </ComparisonProvider>
