@@ -71,16 +71,6 @@ body {
   }
 }
 
-@keyframes heroFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
 .hero-fade-up {
   animation: heroFadeUp 700ms ease-out both;
 }
@@ -89,14 +79,9 @@ body {
   animation: heroVideoDrift 18s ease-in-out infinite alternate;
 }
 
-.hero-float-card {
-  animation: heroFloat 7s ease-in-out infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .hero-fade-up,
-  .hero-video-motion,
-  .hero-float-card {
+  .hero-video-motion {
     animation: none !important;
     transform: none !important;
   }
