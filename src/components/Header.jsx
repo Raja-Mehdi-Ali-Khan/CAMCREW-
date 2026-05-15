@@ -1,43 +1,82 @@
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  Show,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+  useClerk,
+  useUser as useClerkUser,
+} from "@clerk/react";
 import { useCart } from "../context/ServiceContext";
 import { Button } from "./Button";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useUser } from "../context/UserContext";
+import { useUser as useAppUser } from "../context/UserContext";
 import { useComparison } from "../context/ComparsionContext";
 import { apiUrl } from "../config/api";
 // import { CgMenu, CgClose } from "react-icons/cg";
 
 const Header = () => {
   const [isMenu, setMenuOpen] = useState(false);
-  const { user, logout, isAuthenticated } = useAuth0();
-  const { userData, updateUser, join } = useUser();
-  const { loginWithRedirect } = useAuth0();
   const { selectedProducts } = useComparison();
+  const { userData: appUserData, updateUser } = useAppUser();
+  const { isLoaded, isSignedIn, user: clerkUser } = useClerkUser();
+  const { signOut } = useClerk();
   const navigate = useNavigate();
+  const clerkEmail = clerkUser?.primaryEmailAddress?.emailAddress;
+  const clerkFirstName = clerkUser?.firstName;
+  const clerkLastName = clerkUser?.lastName;
 
   useEffect(() => {
-    // Fetch user data when component mounts
-    const fetchUserData = async () => {
+    if (!isLoaded) return;
+
+    if (!isSignedIn || !clerkEmail) {
+      updateUser(null);
+      return;
+    }
+
+    let isMounted = true;
+
+    const syncUser = async () => {
       try {
-        const response = await fetch(apiUrl(`/api/users/email/${user.email}`));
+        const response = await fetch(apiUrl(`/api/users/email/${clerkEmail}`));
+
         if (!response.ok) {
-          updateUser(null);
-          // throw new Error("User not found");
+          throw new Error("User profile not found");
         }
+
         const userData = await response.json();
-        updateUser(userData);
+        if (isMounted) updateUser(userData);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        if (isMounted) {
+          updateUser({
+            firstname: clerkFirstName || "User",
+            lastname: clerkLastName || "",
+            email: clerkEmail,
+            isCameraman: false,
+          });
+        }
       }
     };
 
-    // Call fetchUserData only if user is authenticated
-    if (isAuthenticated && user) {
-      fetchUserData();
-    }
-  }, [isAuthenticated, user, join, updateUser]); // Depend on isAuthenticated and user
+    syncUser();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [
+    clerkEmail,
+    clerkFirstName,
+    clerkLastName,
+    isLoaded,
+    isSignedIn,
+    updateUser,
+  ]);
+
+  const handleLogout = () => {
+    updateUser(null);
+    signOut({ redirectUrl: "/" });
+  };
 
   const { itemAmount } = useCart();
   const handleToggleMenu = () => {
@@ -83,17 +122,17 @@ const Header = () => {
                   Contact Us
                 </a>
               </li>
-              <li className={` ${userData?.isCameraman ? "hidden" : ""} `}>
+              <li className={` ${appUserData?.isCameraman ? "hidden" : ""} `}>
                 <Link to="/form" className="transition hover:text-bgimage">
                   Join As Cameraman
                 </Link>
               </li>
-              <li className={` ${!userData?.isCameraman ? "hidden" : ""} `}>
+              <li className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}>
                 <Link to="/edituser" className="transition hover:text-bgimage">
                   Edit Profile
                 </Link>
               </li>
-              <li className={` ${!userData?.isCameraman ? "hidden" : ""} `}>
+              <li className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}>
                 <Link to="/add" className="transition hover:text-bgimage">
                   Add Service
                 </Link>
@@ -126,24 +165,23 @@ const Header = () => {
             </button>
 
             <div className="flex items-center gap-3">
-              {!isAuthenticated ? (
-                <Button onClick={() => loginWithRedirect()}>Login</Button>
-              ) : (
-                <>
+              <Show when="signed-out">
+                <SignInButton mode="modal">
+                  <Button>Login</Button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <Button>Sign Up</Button>
+                </SignUpButton>
+              </Show>
+              <Show when="signed-in">
+                <div className="flex items-center gap-3">
                   <span className="max-w-[140px] truncate text-sm font-semibold text-gray-200">
-                    Hello {user?.given_name}
+                    Hello {appUserData?.firstname || clerkFirstName || "User"}
                   </span>
-                  <Button
-                    onClick={() =>
-                      logout({
-                        logoutParams: { returnTo: window.location.origin },
-                      })
-                    }
-                  >
-                    LogOut
-                  </Button>
-                </>
-              )}
+                  <UserButton afterSignOutUrl="/" />
+                  <Button onClick={handleLogout}>LogOut</Button>
+                </div>
+              </Show>
             </div>
           </div>
 
@@ -284,7 +322,7 @@ const Header = () => {
               </li>
               <li
                 onClick={handleCloseMenu}
-                className={` ${userData?.isCameraman ? "hidden" : ""} `}
+                className={` ${appUserData?.isCameraman ? "hidden" : ""} `}
               >
                 <Link
                   to="/form"
@@ -295,7 +333,7 @@ const Header = () => {
               </li>
               <li
                 onClick={handleCloseMenu}
-                className={` ${!userData?.isCameraman ? "hidden" : ""} `}
+                className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}
               >
                 <Link
                   to="/edituser"
@@ -306,7 +344,7 @@ const Header = () => {
               </li>
               <li
                 onClick={handleCloseMenu}
-                className={` ${!userData?.isCameraman ? "hidden" : ""} `}
+                className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}
               >
                 <Link
                   to="/add"
@@ -331,24 +369,25 @@ const Header = () => {
           </div>
 
           <div className="mt-8 border-t border-white/10 pt-5">
-            {!isAuthenticated ? (
-              <Button onClick={() => loginWithRedirect()}>Login</Button>
-            ) : (
+            <Show when="signed-out">
               <div className="space-y-3">
-                <p className="truncate text-sm font-semibold text-gray-200">
-                  Hello {user?.given_name}
-                </p>
-                <Button
-                  onClick={() =>
-                    logout({
-                      logoutParams: { returnTo: window.location.origin },
-                    })
-                  }
-                >
-                  LogOut
-                </Button>
+                <SignInButton mode="modal">
+                  <Button className="w-full">Login</Button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <Button className="w-full">Sign Up</Button>
+                </SignUpButton>
               </div>
-            )}
+            </Show>
+            <Show when="signed-in">
+              <div className="flex flex-col items-start gap-3">
+                <p className="truncate text-sm font-semibold text-gray-200">
+                  Hello {appUserData?.firstname || clerkFirstName || "User"}
+                </p>
+                <UserButton afterSignOutUrl="/" />
+                <Button onClick={handleLogout}>LogOut</Button>
+              </div>
+            </Show>
           </div>
         </div>
       </aside>

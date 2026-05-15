@@ -1,22 +1,19 @@
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { Auth0Provider } from "@auth0/auth0-react";
+import { ClerkProvider } from "@clerk/react";
 import { ToastContainer } from "react-toastify";
 import { Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// import CartProvider from "./context/ProductContext.jsx";
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing Clerk Publishable Key");
+}
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  // <React.StrictMode>
-  <Auth0Provider
-    domain="dev-4oaqynihx8qzjyu5.us.auth0.com"
-    clientId="1egeiZRY9cqJy6yzOyIqoWGKFiot7XVV"
-    authorizationParams={{
-      redirect_uri: window.location.origin,
-    }}
-  >
+  <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
     <App />
     <ToastContainer
       position="top-right"
@@ -31,7 +28,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       theme="dark"
       transition={Bounce}
     />
-  </Auth0Provider>
-  // </React.StrictMode>
-  // <User />
+  </ClerkProvider>
 );

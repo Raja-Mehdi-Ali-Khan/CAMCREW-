@@ -1,9 +1,8 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import * as Yup from "yup";
-import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
-import { useUser } from "../context/UserContext";
+import { useUser as useAppUser } from "../context/UserContext";
 import { apiUrl } from "../config/api";
 
 const validationSchema = Yup.object().shape({
@@ -55,18 +54,15 @@ const FormSection = ({ title, description, children }) => {
 };
 
 const FormComponent = () => {
-  const { user } = useAuth0();
-  const { join, setJoin } = useUser();
-  console.log(user);
-  console.log(user?.email);
+  const { join, setJoin } = useAppUser();
   return (
     <div className="text-white">
       <section className="p-6 ">
         <Formik
           initialValues={{
-            firstname: user?.firstname || "",
-            lastname: user?.lastname || "",
-            email: user?.email || "",
+            firstname: "",
+            lastname: "",
+            email: "",
             address: "",
             city: "",
             state: "",

@@ -2,7 +2,7 @@ import { useCart } from "../../context/ServiceContext";
 import { useState } from "react";
 import Star from "./Star";
 import { useNavigate } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useUser } from "../../context/UserContext";
 import { useComparison } from "../../context/ComparsionContext";
 import { toast, Bounce } from "react-toastify";
 import LoginRequiredModal from "../LoginRequiredModal";
@@ -11,13 +11,14 @@ const ServiceCard = ({ product }) => {
   const { addToCart } = useCart();
   const [showModal, setShowModal] = useState(false);
   const { addProduct } = useComparison();
-  const { isAuthenticated } = useAuth0();
+  const { userData } = useUser();
+  const isSignedIn = !!userData;
   const navigate = useNavigate();
-  // console.log(isAuthenticated);
+  // console.log(isSignedIn);
   const handleAddToCartClick = (e) => {
     e.stopPropagation(); // Stop the event propagation here
     
-    if (isAuthenticated) {
+    if (isSignedIn) {
       addToCart(product, product?._id);
       toast.success("Added to FavList", {
       position: "top-right",

@@ -7,7 +7,7 @@ import { toast, Bounce } from "react-toastify";
 
 import Star from "../components/CategoryComp/Star";
 import { useCart } from "../context/ServiceContext";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useUser } from "../context/UserContext";
 import MakeStar from "../components/CategoryComp/MakeStar";
 import axios from "axios";
 import RatingComp from "../components/RatingComp";
@@ -182,10 +182,11 @@ const ServiceDetailsPage = () => {
   // console.log(product);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const { user, isAuthenticated } = useAuth0();
+  const { userData: user } = useUser();
+  const isSignedIn = !!user;
   const discountedPrice = parseInt(product[0]?.price);
   const handleAddToCartClick = () => {
-    if (isAuthenticated) {
+    if (isSignedIn) {
       addToCart(product[0], product[0]?._id);
     } else {
       setShowModal(true);
@@ -200,8 +201,8 @@ const ServiceDetailsPage = () => {
         rating,
         desc,
         productId: productId,
-        userName: user?.given_name,
-        userImage: user?.picture,
+        userName: user?.firstname,
+        userImage: user?.image,
         count: 1,
       });
       setRating("");
@@ -317,7 +318,7 @@ const ServiceDetailsPage = () => {
 
       prefill: {
        
-        name: user?.given_name, 
+        name: user?.firstname, 
         email: user?.email,
         contact: "9000000000", 
       },
@@ -643,7 +644,7 @@ const ServiceDetailsPage = () => {
                   <div className="w-full px-4 mb-4 lg:mb-0 lg:w-1/2">
                     <button
                       onClick={(e) => {
-                        if (isAuthenticated) {
+                        if (isSignedIn) {
                           paymentHandler(e);
                         } else {
                           setShowModal(true);
@@ -660,7 +661,7 @@ const ServiceDetailsPage = () => {
           </div>
 
           <div>
-            {isAuthenticated && (
+            {isSignedIn && (
               <div className=" mt-2 ">
                 <select value={language} onChange={handleLanguageChange}>
                   <option value="telugu">Telugu</option>
@@ -687,14 +688,14 @@ const ServiceDetailsPage = () => {
                 >
                   <div>
                     <img
-                      src={user?.picture}
+                      src={user?.image}
                       alt=""
                       className="w-12 h-12 rounded-full dark:bg-gray-300"
                     />{" "}
                   </div>
 
                   <div>
-                    <div className="font-bold"> {user?.given_name} </div>
+                    <div className="font-bold"> {user?.firstname} </div>
                     <MakeStar konsaStar={konsaStar} />
                     <textarea
                       id="desc"

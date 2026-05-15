@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useUser } from "../context/UserContext";
 import axios from "axios";
 import { apiUrl } from "../config/api";
 
@@ -57,21 +57,23 @@ const FormSection = ({ title, description, children }) => {
 };
 
 const EditProfilePage = () => {
-  const [userData, setUserData] = useState(null);
-  const { user } = useAuth0();
+  const [localUserData, setLocalUserData] = useState(null);
+  const { userData: user } = useUser();
+  const userEmail = user?.email;
   console.log(user);
-  console.log(user?.email);
+  console.log(userEmail);
 
   const fetchUserData = useCallback(async () => {
     try {
-      const response = await axios.get(apiUrl(`/api/users/email/${user?.email}`));
+      if (!userEmail) return;
+      const response = await axios.get(apiUrl(`/api/users/email/${userEmail}`));
       const data = response.data;
       console.log(data);
-      setUserData(data);
+      setLocalUserData(data);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
-  }, [user?.email]);
+  }, [userEmail]);
 
   useEffect(() => {
     // Fetch user data from the backend
@@ -80,9 +82,10 @@ const EditProfilePage = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
+      if (!userEmail) return;
       // Send updated user data to the backend
       const response = await axios.put(
-        apiUrl(`/api/users/email/${user?.email}`),
+        apiUrl(`/api/users/email/${userEmail}`),
         values
       );
       if (response.status === 200) {
@@ -102,10 +105,10 @@ const EditProfilePage = () => {
   return (
     <div className="text-white">
       <section className="p-6 ">
-        {userData ? (
+        {localUserData ? (
           <Formik
             initialValues={
-              userData || {
+              localUserData || {
                 firstname: "",
                 lastname: "",
                 email: "",
