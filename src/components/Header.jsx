@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   Show,
   SignInButton,
-  SignUpButton,
   UserButton,
   useClerk,
   useUser as useClerkUser,
@@ -111,7 +110,7 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  to="/category/media%20videography"
+                  to="/category/media videography"
                   className="transition hover:text-bgimage"
                 >
                   Portfolios
@@ -167,11 +166,8 @@ const Header = () => {
             <div className="flex items-center gap-3">
               <Show when="signed-out">
                 <SignInButton mode="modal">
-                  <Button>Login</Button>
+                  <Button>Login / Sign Up</Button>
                 </SignInButton>
-                <SignUpButton mode="modal">
-                  <Button>Sign Up</Button>
-                </SignUpButton>
               </Show>
               <Show when="signed-in">
                 <div className="flex items-center gap-3">
@@ -304,7 +300,7 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  to="/category/MediaVideography"
+                  to="/category/media videography"
                   onClick={handleCloseMenu}
                   className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
                 >
@@ -372,11 +368,8 @@ const Header = () => {
             <Show when="signed-out">
               <div className="space-y-3">
                 <SignInButton mode="modal">
-                  <Button className="w-full">Login</Button>
+                  <Button className="w-full">Login / Sign Up</Button>
                 </SignInButton>
-                <SignUpButton mode="modal">
-                  <Button className="w-full">Sign Up</Button>
-                </SignUpButton>
               </div>
             </Show>
             <Show when="signed-in">

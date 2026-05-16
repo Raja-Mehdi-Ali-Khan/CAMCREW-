@@ -56,7 +56,7 @@ const FormSection = ({ title, description, children }) => {
 const FormComponent = () => {
   const { join, setJoin } = useAppUser();
   return (
-    <div className="text-white">
+    <div className="text-white pt-[68px] sm:pt-[76px] xl:pt-[84px]">
       <section className="p-6 ">
         <Formik
           initialValues={{

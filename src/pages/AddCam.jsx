@@ -90,7 +90,7 @@ const AddCam = () => {
   }, [formData]);
 
   return (
-    <div className="flex  justify-center items-center">
+    <div className="flex pt-[68px] sm:pt-[76px] xl:pt-[84px] justify-center items-center">
       <div className="container w-screen py-10">
         <h1 className="text-white font-bold text-4xl mb-4 flex justify-center items-center  mx-auto">
           Add New Services

@@ -137,8 +137,8 @@ const ComparisonPage = () => {
   };
 
   return (
-    <div>
-      <h2>Product Comparison</h2>
+    <div className="pt-[68px] sm:pt-[76px] xl:pt-[84px]">
+      <h2 className=" text-white text-3xl font-bold flex justify-center items-center my-4 ">Product Comparison</h2>
 
       {renderComparisonTable()}
       <div className=" flex justify-center items-center m-10 ">

@@ -385,7 +385,7 @@ const ServiceDetailsPage = () => {
   }, [fetchExcludedIntervals, productEmail]);
 
   return (
-    <>
+    <div className="pt-[68px] sm:pt-[76px] xl:pt-[84px]">
       <section className="overflow-hidden bg-white py-11 font-poppins dark:bg-gray-800">
         <div className="max-w-4xl px-4 py-4 mx-auto lg:py-8 md:px-6">
           <div className="flex flex-wrap -mx-4">
@@ -730,7 +730,7 @@ const ServiceDetailsPage = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
