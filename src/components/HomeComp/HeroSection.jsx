@@ -10,7 +10,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import AnimatedTextCharacter from "../AnimatedText";
 
 const HeroSection = () => {
-  // const { name } = mydata;
 
   useEffect(() => {
     // Register the ScrollTrigger plugin
