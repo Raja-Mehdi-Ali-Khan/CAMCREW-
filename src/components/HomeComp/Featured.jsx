@@ -85,9 +85,14 @@ const Featured = () => {
                   </div>
                 </div>
 
-                <div className="mt-6 inline-flex w-fit items-center gap-3 rounded-full bg-bgimage px-5 py-2.5 text-xs font-black uppercase text-gray-950 transition group-hover:-translate-y-0.5 group-hover:bg-bgdarkimage sm:mt-7 sm:px-6 sm:py-3 sm:text-sm">
-                  Browse crews
-                  <FontAwesomeIcon icon={faArrowRight} />
+                <div className="mt-6 sm:mt-7">
+                  <div className="join-crew-button inline-flex w-fit items-center gap-3 rounded-full px-5 py-2.5 text-xs font-black uppercase text-slate-950 shadow-lg shadow-black/20 transition group-hover:-translate-y-0.5 sm:px-6 sm:py-3 sm:text-sm">
+                    <span className="relative z-10">Browse crews</span>
+                    <FontAwesomeIcon
+                      icon={faArrowRight}
+                      className="relative z-10"
+                    />
+                  </div>
                 </div>
               </div>
             </Link>
