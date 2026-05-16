@@ -7,10 +7,10 @@ const Featured = () => {
   return (
     <section
       id="category"
-      className="bg-[rgb(22,21,21)] px-4 py-10 text-white sm:px-6 sm:py-14 lg:px-8 lg:py-20"
+      className="relative z-0 -mt-4 bg-[rgb(22,21,21)] px-4 pb-8 pt-6 text-white sm:-mt-6 sm:px-6 sm:pb-10 sm:pt-8 lg:-mt-8 lg:px-8 lg:pb-14 lg:pt-10"
     >
       <div className="mx-auto max-w-[92rem]">
-        <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end lg:mb-10 lg:gap-5">
+        <div className="mb-5 flex flex-col justify-between gap-4 md:flex-row md:items-end lg:mb-7 lg:gap-5">
           <div>
             <p className="text-xs font-bold uppercase tracking-wide text-bgdarkimage sm:text-sm">
               Browse by need
@@ -25,7 +25,7 @@ const Featured = () => {
           </p>
         </div>
 
-        <div id="featured-services" className="space-y-5 lg:space-y-6">
+        <div id="featured-services" className="space-y-4 lg:space-y-5">
           {categories.map((category, index) => (
             <Link
               key={category.id}
