@@ -123,7 +123,7 @@ const Header = () => {
               </li>
               <li className={` ${appUserData?.isCameraman ? "hidden" : ""} `}>
                 <Link to="/form" className="transition hover:text-bgimage">
-                  Join As Cameraman
+                  Join the Crew
                 </Link>
               </li>
               <li className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}>
@@ -324,7 +324,7 @@ const Header = () => {
                   to="/form"
                   className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
                 >
-                  Join As Cameraman
+                  Join the Crew
                 </Link>
               </li>
               <li

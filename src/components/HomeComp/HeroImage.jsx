@@ -16,7 +16,7 @@ const HeroImage = () => {
   ];
 
   return (
-    <section className="relative isolate overflow-hidden bg-gray-950 text-white">
+    <section className="relative isolate overflow-hidden bg-[#201712] text-white">
       <video
         className="hero-video-motion absolute inset-0 -z-20 h-full w-full object-cover"
         autoPlay
@@ -32,18 +32,23 @@ const HeroImage = () => {
         />
       </video>
 
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/90 via-black/60 to-black/75" />
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_72%_18%,rgba(255,210,120,0.26),transparent_34%)]" />
-      <div className="absolute inset-x-0 bottom-0 -z-10 h-28 bg-gradient-to-t from-gray-950 via-gray-950/70 to-transparent sm:h-36" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#1d130d]/96 via-[#2a1d13]/82 to-black/84" />
+      <div className="absolute inset-0 -z-10 bg-black/30" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_72%_18%,rgba(255,210,120,0.34),transparent_34%)]" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_25%,rgba(255,245,216,0.12),transparent_26%)]" />
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-t from-[#fff0c6] via-[#fff0c6]/55 to-transparent sm:h-40" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-44 bg-gradient-to-b from-transparent via-[rgb(22,21,21)]/45 to-[rgb(22,21,21)] sm:h-56" />
 
-      <div className="relative mx-auto flex h-[60vh] w-full max-w-[96rem] items-center px-4 py-4 sm:px-8 sm:py-5 lg:px-10">
-        <div className="hero-fade-up flex max-w-[48rem] flex-col items-center text-center lg:items-start lg:text-left">
-          <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-bgimage shadow-lg shadow-black/20 backdrop-blur-sm min-[390px]:text-[10px] sm:text-xs">
+      <div className="relative z-10 mx-auto flex min-h-[28rem] w-full max-w-[96rem] items-start px-4 pb-8 pt-4 min-[430px]:min-h-[32rem] sm:min-h-[36rem] sm:items-center sm:px-8 sm:pt-5 sm:pb-10 lg:min-h-[40rem] lg:px-10 xl:min-h-[42rem]">
+        <div className="hero-fade-up flex w-full max-w-[56rem] flex-col items-center px-1 py-3 text-center sm:px-0 sm:py-4 lg:items-start lg:text-left">
+          <p className="inline-flex max-w-full items-center gap-2 rounded-full border border-amber-200/70 bg-white/40 px-3 py-1.5 text-[8px] font-bold uppercase tracking-[0.12em] text-amber-800 shadow-lg shadow-black/10 backdrop-blur-sm min-[390px]:text-[9px] sm:text-xs">
             <FontAwesomeIcon icon={faClapperboard} />
-            Professional videography marketplace
+            <span className="truncate">
+              Professional videography marketplace
+            </span>
           </p>
 
-          <h1 className="hero-fade-up mt-3 w-full max-w-full text-3xl font-black leading-[0.95] text-white min-[390px]:text-4xl sm:mt-4 sm:max-w-[34rem] sm:text-5xl lg:max-w-[60vw] lg:text-6xl">
+          <h1 className="hero-fade-up mt-5 w-full max-w-full text-[2.55rem] font-black leading-[0.92] text-slate-950 min-[390px]:text-[3.1rem] sm:mt-5 sm:max-w-[40rem] sm:text-5xl lg:max-w-[60vw] lg:text-6xl xl:text-[5rem]">
             Make your brand look cinematic.
             <span className="mt-2 block text-bgimage">
               Stories shot with intention.
@@ -51,7 +56,7 @@ const HeroImage = () => {
           </h1>
 
           <p
-            className="hero-fade-up mt-3 max-w-[31rem] text-xs font-medium leading-5 text-gray-200 min-[390px]:text-sm sm:max-w-[34rem] sm:leading-6"
+            className="hero-fade-up mt-4 max-w-[36rem] rounded-2xl bg-black/26 px-4 py-3 text-sm font-medium leading-7 text-white shadow-[0_12px_30px_rgba(0,0,0,0.22)] min-[390px]:text-[1rem] sm:max-w-[38rem] sm:text-sm sm:leading-6"
             style={{ animationDelay: "120ms" }}
           >
             Discover vetted videographers for weddings, campaigns, and events.
@@ -59,24 +64,24 @@ const HeroImage = () => {
           </p>
 
           <div
-            className="hero-fade-up mt-4 flex w-full flex-col gap-2.5 min-[430px]:w-auto min-[430px]:flex-row sm:mt-5"
+            className="hero-fade-up mt-7 flex w-full flex-wrap justify-center gap-3 sm:mt-7 min-[430px]:w-auto lg:justify-start"
             style={{ animationDelay: "220ms" }}
           >
             <a
               rel="noopener noreferrer"
               href="#category"
-              className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-bgimage px-4 py-2.5 text-xs font-black text-gray-950 shadow-lg shadow-black/30 transition duration-300 hover:-translate-y-1 hover:bg-[#ffbe3f] hover:shadow-bgimage/20 sm:px-5 sm:text-sm"
+              className="join-crew-button group inline-flex min-h-[3.25rem] flex-1 basis-[11rem] items-center justify-center gap-2.5 rounded-full px-4 py-3 text-sm font-black text-slate-950 shadow-lg shadow-black/20 transition duration-300 hover:-translate-y-1 min-[430px]:min-h-[3.5rem] min-[430px]:px-5 min-[430px]:text-base sm:min-h-12 sm:flex-none sm:basis-auto sm:px-5 sm:text-sm"
             >
-              <span>Explore categories</span>
+              <span className="relative z-10">Explore categories</span>
               <FontAwesomeIcon
                 icon={faArrowRight}
-                className="transition duration-300 group-hover:translate-x-1"
+                className="relative z-10 transition duration-300 group-hover:translate-x-1"
               />
             </a>
             <a
               rel="noopener noreferrer"
               href="#featured-services"
-              className="group inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-black/15 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-bgimage/60 hover:bg-white/15 sm:px-5 sm:text-sm"
+              className="group inline-flex min-h-[3.25rem] flex-1 basis-[11rem] items-center justify-center gap-2 rounded-full border border-slate-900/10 bg-slate-950 px-4 py-3 text-sm font-bold text-amber-100 shadow-lg shadow-black/15 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:bg-slate-900 min-[430px]:min-h-[3.5rem] min-[430px]:px-5 min-[430px]:text-base sm:min-h-12 sm:flex-none sm:basis-auto sm:px-5 sm:text-sm"
             >
               <FontAwesomeIcon
                 icon={faCirclePlay}
@@ -87,13 +92,13 @@ const HeroImage = () => {
           </div>
 
           <div
-            className="hero-fade-up mt-4 hidden w-full max-w-[38rem] flex-wrap justify-center gap-2 min-[430px]:flex sm:mt-5 lg:justify-start"
+            className="hero-fade-up mt-6 hidden w-full max-w-[38rem] flex-wrap justify-center gap-2 min-[430px]:flex sm:mt-7 lg:justify-start"
             style={{ animationDelay: "320ms" }}
           >
             {highlights.map((item) => (
               <div
                 key={item.label}
-                className="hero-chip group inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-[10px] font-bold text-white backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-bgimage/40 hover:bg-white/15 sm:text-[11px]"
+                className="hero-chip group inline-flex items-center justify-center gap-2 rounded-full border border-amber-200/70 bg-white/40 px-3 py-2 text-[10px] font-bold text-slate-800 backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-bgimage/40 hover:bg-white/55 sm:text-[11px]"
               >
                 <FontAwesomeIcon
                   icon={item.icon}

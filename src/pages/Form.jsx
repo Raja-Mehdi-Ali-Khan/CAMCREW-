@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useUser as useAppUser } from "../context/UserContext";
 import { apiUrl } from "../config/api";
+import camerabg from "../assets/camerabg.jpg";
 
 const validationSchema = Yup.object().shape({
   firstname: Yup.string().required("First name is required"),
@@ -20,7 +21,10 @@ const validationSchema = Yup.object().shape({
 const FormField = ({ label, id, type, placeholder }) => {
   return (
     <div className="col-span-full sm:col-span-3">
-      <label htmlFor={id} className="text-sm">
+      <label
+        htmlFor={id}
+        className="text-sm font-bold uppercase tracking-[0.12em] text-amber-100"
+      >
         {label}
       </label>
       <Field
@@ -28,36 +32,22 @@ const FormField = ({ label, id, type, placeholder }) => {
         name={id}
         type={type}
         placeholder={placeholder}
-        className="w-full text-black rounded-md focus:ring focus:ring-opacity-75 "
+        className="mt-2 w-full rounded-2xl border border-white/10 bg-white/95 px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-200/70"
       />
       <ErrorMessage
         name={id}
         component="div"
-        className="text-red-500 text-sm"
+        className="mt-2 text-sm font-medium text-rose-500"
       />
     </div>
-  );
-};
-
-const FormSection = ({ title, description, children }) => {
-  return (
-    <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm ">
-      <div className="space-y-2 col-span-full lg:col-span-1">
-        <p className="font-medium">{title}</p>
-        <p className="text-xs">{description}</p>
-      </div>
-      <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-        {children}
-      </div>
-    </fieldset>
   );
 };
 
 const FormComponent = () => {
   const { join, setJoin } = useAppUser();
   return (
-    <div className="text-white pt-[68px] sm:pt-[76px] xl:pt-[84px]">
-      <section className="p-6 ">
+    <div className="min-h-screen bg-[linear-gradient(180deg,#fff1c4_0%,#ffd87b_22%,#ffc961_50%,#f0ad43_100%)] text-slate-900">
+      <section className="w-full px-4 pb-16 pt-28 sm:px-6 sm:pt-32 lg:px-8 xl:pt-36">
         <Formik
           initialValues={{
             firstname: "",
@@ -83,7 +73,7 @@ const FormComponent = () => {
               console.log(response.data);
               setSubmitting(false);
               setJoin(!join);
-              alert("Joined as Cameraman");
+              alert("Welcome to the Crew!");
             } catch (error) {
 
               if (error.response) {
@@ -95,60 +85,126 @@ const FormComponent = () => {
             }
           }}
         >
-          {() => (
+          {({ isSubmitting }) => (
             <Form
               noValidate=""
-              className="container flex flex-col mx-auto space-y-12"
+              className="mx-auto w-full max-w-[94rem]"
             >
-              <FormSection
-                title="Personal Information"
-                description="Enter Your Valid Details"
+              <div
+                className="relative overflow-hidden rounded-[2.25rem] border border-white/10 bg-gray-950/95 p-7 shadow-[0_28px_80px_rgba(15,23,42,0.28)] sm:p-10 lg:p-12"
+                style={{
+                  backgroundImage: `linear-gradient(135deg, rgba(2, 6, 23, 0.78), rgba(17, 24, 39, 0.52) 42%, rgba(120, 53, 15, 0.2) 100%), url(${camerabg})`,
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                }}
               >
-                <FormField
-                  label="First name"
-                  id="firstname"
-                  type="text"
-                  placeholder="First name"
-                />
-                <FormField
-                  label="Last name"
-                  id="lastname"
-                  type="text"
-                  placeholder="Last name"
-                />
-                <FormField
-                  label="Email"
-                  id="email"
-                  type="email"
-                  placeholder="Email"
-                />
-                <FormField
-                  label="Address"
-                  id="address"
-                  type="text"
-                  placeholder=""
-                />
-                <FormField label="City" id="city" type="text" placeholder="" />
-                <FormField
-                  label="State / Province"
-                  id="state"
-                  type="text"
-                  placeholder=""
-                />
-                <FormField
-                  label="ZIP / Postal"
-                  id="zip"
-                  type="text"
-                  placeholder=""
-                />
-              </FormSection>
-              {}
-              <button
-                type="submit"
-                className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-              >
-                Submit
-              </button>
+                <div className="absolute -right-16 top-0 h-44 w-44 rounded-full bg-amber-400/12 blur-3xl" />
+                <div className="absolute bottom-0 left-0 h-36 w-36 rounded-full bg-amber-300/12 blur-3xl" />
+                <div className="absolute left-[12%] top-[18%] h-32 w-32 rounded-full bg-white/5 blur-3xl" />
+                <div className="absolute inset-y-0 right-[14%] hidden w-px bg-white/12 lg:block" />
+
+                <div className="relative z-10">
+                  <div className="max-w-4xl">
+                    <p className="text-sm font-black uppercase tracking-[0.22em] text-amber-700">
+                      Join the Crew
+                    </p>
+                    <h1 className="mt-3 max-w-4xl text-4xl font-black leading-none text-white sm:text-5xl lg:text-6xl">
+                      Bring your lens, energy, and craft to CamCrew.
+                    </h1>
+                    <p className="mt-4 max-w-3xl text-sm font-medium leading-7 text-gray-300 sm:text-base">
+                      Tell us who you are and where you work from. We&apos;ll use these
+                      details to help clients discover you faster and trust your
+                      profile from day one.
+                    </p>
+
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-amber-100">
+                        Fast onboarding
+                      </span>
+                      <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-amber-100">
+                        Creative-friendly
+                      </span>
+                      <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-amber-100">
+                        Built for bookings
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-10">
+                    <div className="space-y-3">
+                      <p className="text-lg font-black text-white">
+                        Personal Information
+                      </p>
+                      <p className="max-w-md text-sm leading-6 text-gray-300">
+                        Share the essentials so your profile starts strong and reaches
+                        the right clients from the moment you join.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-6 gap-4">
+                      <FormField
+                        label="First name"
+                        id="firstname"
+                        type="text"
+                        placeholder="First name"
+                      />
+                      <FormField
+                        label="Last name"
+                        id="lastname"
+                        type="text"
+                        placeholder="Last name"
+                      />
+                      <FormField
+                        label="Email"
+                        id="email"
+                        type="email"
+                        placeholder="Email"
+                      />
+                      <FormField
+                        label="Address"
+                        id="address"
+                        type="text"
+                        placeholder=""
+                      />
+                      <FormField label="City" id="city" type="text" placeholder="" />
+                      <FormField
+                        label="State / Province"
+                        id="state"
+                        type="text"
+                        placeholder=""
+                      />
+                      <FormField
+                        label="ZIP / Postal"
+                        id="zip"
+                        type="text"
+                        placeholder=""
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-6 lg:flex-row lg:items-center lg:justify-between">
+                    <div>
+                      <p className="text-lg font-black text-white">
+                        Ready to get discovered?
+                      </p>
+                      <p className="mt-1 text-sm leading-6 text-gray-300">
+                        Submit your details and start building your presence on
+                        CamCrew.
+                      </p>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="join-crew-button inline-flex min-h-[3.75rem] items-center justify-center self-start rounded-full px-8 py-3 text-sm font-black uppercase tracking-[0.14em] text-slate-950 shadow-[0_16px_40px_rgba(120,53,15,0.22)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 lg:self-auto"
+                    >
+                      <span className="relative z-10">
+                        {isSubmitting ? "Joining..." : "Join the Crew"}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </Form>
           )}
         </Formik>
