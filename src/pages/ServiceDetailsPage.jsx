@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
@@ -16,6 +16,38 @@ import "react-simple-keyboard/build/css/index.css";
 import { apiUrl } from "../config/api";
 import LoginRequiredModal from "../components/LoginRequiredModal";
 // import TeluguKeyboard from "../components/TeluguKeyBoard";
+
+const RAZORPAY_CHECKOUT_SRC = "https://checkout.razorpay.com/v1/checkout.js";
+
+const loadRazorpayCheckout = () =>
+  new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+
+    const existingScript = document.querySelector(
+      `script[src="${RAZORPAY_CHECKOUT_SRC}"]`
+    );
+
+    if (existingScript) {
+      existingScript.addEventListener("load", () => resolve(!!window.Razorpay), {
+        once: true,
+      });
+      existingScript.addEventListener("error", () => resolve(false), {
+        once: true,
+      });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = RAZORPAY_CHECKOUT_SRC;
+    script.async = true;
+    script.onload = () => resolve(!!window.Razorpay);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+
 const ServiceDetailsPage = () => {
   const { addToCart } = useCart();
   const { productId } = useParams();
@@ -228,120 +260,175 @@ const ServiceDetailsPage = () => {
   // console.log(product);
 
   const paymentHandler = async (e) => {
-    const response = await fetch(apiUrl("/order"), {
-      method: "POST",
-      body: JSON.stringify({
-        amount: (parseInt(product[0]?.price * numberOfDays) * 100) / 2,
+    e.preventDefault();
+
+    if (!product[0] || !startDate || !endDate || numberOfDays <= 0) {
+      toast.error("Select a valid booking range before payment.", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark",
+        transition: Bounce,
+      });
+      return;
+    }
+
+    const razorpayKey =
+      import.meta.env.VITE_RAZORPAY_KEY_ID ||
+      import.meta.env.REACT_APP_RAZORPAY_KEY_ID;
+
+    if (!razorpayKey) {
+      toast.error("Payment is not configured yet.", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark",
+        transition: Bounce,
+      });
+      return;
+    }
+
+    const isCheckoutReady = await loadRazorpayCheckout();
+
+    if (!isCheckoutReady || !window.Razorpay) {
+      toast.error(
+        "Checkout could not load. If you use an ad blocker, allow Razorpay and try again.",
+        {
+          position: "top-right",
+          autoClose: 4000,
+          theme: "dark",
+          transition: Bounce,
+        }
+      );
+      return;
+    }
+
+    try {
+      const response = await fetch(apiUrl("/order"), {
+        method: "POST",
+        body: JSON.stringify({
+          amount: (parseInt(product[0]?.price * numberOfDays) * 100) / 2,
+          currency: "INR",
+          receipt: productId,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to create payment order");
+      }
+
+      const order = await response.json();
+
+      const options = {
+        key: razorpayKey,
+        amount: (parseInt(product[0]?.price) * 100) / 2,
         currency: "INR",
-        receipt: productId,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const order = await response.json();
-    // console.log(order);
+        name: "CamCrew",
+        description: "Advance booking payment",
+        image: "https://example.com/your_logo",
+        order_id: order.id,
+        handler: function (response) {
+          const body = { ...response };
 
-    var options = {
-      key:
-        import.meta.env.VITE_RAZORPAY_KEY_ID ||
-        import.meta.env.REACT_APP_RAZORPAY_KEY_ID,
-      amount: (parseInt(product[0]?.price) * 100) / 2,
-      currency: "INR",
-      name: "CamCrew",
-      description: "Test Transaction",
-      image: "https://example.com/your_logo",
-      order_id: order.id, 
-      handler: function (response) {
-        const body = { ...response };
-
-        fetch(apiUrl("/order/validate"), {
-          method: "POST",
-          body: JSON.stringify(body),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((validateRes) => validateRes.json())
-          .then((jsonRes) => {
-            if (jsonRes.msg === "success" && startDate && endDate) {
-              return axios.put(apiUrl("/update-excluded-intervals"), {
-                email: product[0]?.email,
-                start: startDate,
-                end: endDate,
-              });
-            } else {
+          fetch(apiUrl("/order/validate"), {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((validateRes) => validateRes.json())
+            .then((jsonRes) => {
+              if (jsonRes.msg === "success" && startDate && endDate) {
+                return axios.put(apiUrl("/update-excluded-intervals"), {
+                  email: product[0]?.email,
+                  start: startDate,
+                  end: endDate,
+                });
+              }
               throw new Error("Validation failed or missing start/end dates");
-            }
-          })
-          .then(() => {
-            return axios.post(apiUrl("/sendmail"), {
-              email: product[0]?.email, 
-              startDate: moment(startDate).format("MMM DD, YYYY"), 
-              endDate: moment(endDate).format("MMM DD, YYYY"),
-              price: parseInt(product[0]?.price) / 2,
-              clientEmail: user?.email, 
-            });
-          })
-          .then(() => {
-            // Call the cilentsendmail API here
-            return axios.post(
-              apiUrl("/cilentsendmail"),
-              {
+            })
+            .then(() => {
+              return axios.post(apiUrl("/sendmail"), {
+                email: product[0]?.email,
+                startDate: moment(startDate).format("MMM DD, YYYY"),
+                endDate: moment(endDate).format("MMM DD, YYYY"),
+                price: parseInt(product[0]?.price) / 2,
+                clientEmail: user?.email,
+              });
+            })
+            .then(() => {
+              return axios.post(apiUrl("/cilentsendmail"), {
                 email: user?.email,
                 userName: user?.given_name,
                 price: parseInt(product[0]?.price) / 2,
                 cameramanMail: product[0]?.email,
-              }
-            );
-          })
-          .then((mailResponse) => {
-            setArr([
-              ...arr,
-              {
-                start: startDate,
-                end: endDate,
-              },
-            ]);
-            setStartDate(null);
-            setEndDate(null);
-            setNumberOfDays(0);
-            console.log(mailResponse.data); 
-          })
-          .catch((error) => {
-            console.error(
-              "Error:",
-              error.response ? error.response.data.message : error.message
-            );
-          });
-      },
+              });
+            })
+            .then((mailResponse) => {
+              setArr([
+                ...arr,
+                {
+                  start: startDate,
+                  end: endDate,
+                },
+              ]);
+              setStartDate(null);
+              setEndDate(null);
+              setNumberOfDays(0);
+              console.log(mailResponse.data);
+            })
+            .catch((error) => {
+              console.error(
+                "Error:",
+                error.response ? error.response.data.message : error.message
+              );
+              toast.error("Payment went through, but follow-up booking steps failed.", {
+                position: "top-right",
+                autoClose: 4000,
+                theme: "dark",
+                transition: Bounce,
+              });
+            });
+        },
 
-      prefill: {
-       
-        name: user?.firstname, 
-        email: user?.email,
-        contact: "9000000000", 
-      },
-      notes: {
-        address: "CamCrew MNC Office",
-      },
-      theme: {
-        color: "#3399cc",
-      },
-    };
+        prefill: {
+          name: user?.firstname,
+          email: user?.email,
+          contact: "9000000000",
+        },
+        notes: {
+          address: "CamCrew MNC Office",
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
 
-    var rzp1 = new window.Razorpay(options);
-    rzp1.on("payment.failed", function (response) {
-      alert(response.error.code);
-      alert(response.error.description);
-      alert(response.error.source);
-      alert(response.error.step);
-      alert(response.error.reason);
-      alert(response.error.metadata.order_id);
-      alert(response.error.metadata.payment_id);
-    });
-    rzp1.open();
-    e.preventDefault();
+      const razorpayInstance = new window.Razorpay(options);
+      razorpayInstance.on("payment.failed", function (response) {
+        console.error("Payment failed", response.error);
+        toast.error(
+          response.error?.description || "Payment failed. Please try again.",
+          {
+            position: "top-right",
+            autoClose: 4000,
+            theme: "dark",
+            transition: Bounce,
+          }
+        );
+      });
+      razorpayInstance.open();
+    } catch (error) {
+      console.error("Error starting payment:", error.message);
+      toast.error("Unable to start payment right now. Please try again.", {
+        position: "top-right",
+        autoClose: 4000,
+        theme: "dark",
+        transition: Bounce,
+      });
+    }
   };
   console.log(product[0]?.email);
 
@@ -457,53 +544,6 @@ const ServiceDetailsPage = () => {
             <div className="w-full px-4 md:w-1/2 ">
               <div className="lg:pl-20">
                 <div className="mb-8 ">
-                  <nav className="flex" aria-label="Breadcrumb">
-                    <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-                      <li className="inline-flex items-center">
-                        <Link
-                          to={"/"}
-                          className="inline-flex items-center text-md font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
-                        >
-                          <svg
-                            className="w-3 h-3 me-2.5"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
-                          </svg>
-                          Category Page
-                        </Link>
-                      </li>
-                      <li>
-                        <div className="flex items-center">
-                          <svg
-                            className="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 6 10"
-                          >
-                            <path
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="m1 9 4-4-4-4"
-                            />
-                          </svg>
-                          <Link
-                            to={`/category/${product[0]?.category}`}
-                            className="ms-1 text-md capitalize font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white"
-                          >
-                            {product[0]?.category}
-                          </Link>
-                        </div>
-                      </li>
-                    </ol>
-                  </nav>
-
                   <h2 className="max-w-xl mt-2 mb-6 text-xl font-bold dark:text-gray-400 md:text-4xl">
                     {product[0]?.title}
                   </h2>
@@ -542,7 +582,7 @@ const ServiceDetailsPage = () => {
                     </p> */}
                   </div>
                 </div>
-                <div className="border w-full p-2 rounded-2xl my-4">
+                <div className="my-4 w-full rounded-2xl border border-gray-200 p-2">
                   <div className="flex">
                     <div className="py-3 ">
                       <label>Book From:</label>
@@ -701,7 +741,7 @@ const ServiceDetailsPage = () => {
                       id="desc"
                       value={desc}
                       onChange={(e) => setDesc(e.target.value)}
-                      className="w-full border rounded py-1 px-2 mb-3"
+                      className="mb-3 w-full rounded border border-gray-300 px-2 py-1"
                     />
 
                     <button

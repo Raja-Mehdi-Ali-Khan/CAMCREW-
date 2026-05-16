@@ -156,9 +156,11 @@ const AddCam = () => {
               </div>
               <button
                 onClick={uploadToDatabase}
-                className="px-8 py-3 bg-bgimage  text-white font-semibold rounded hover:bg-bgdarkimage focus:outline-none focus:bg-bgdarkimage"
+                className="join-crew-button inline-flex min-h-[3rem] items-center justify-center rounded-full px-8 py-3 text-sm font-black uppercase tracking-[0.12em] text-slate-950 shadow-lg shadow-black/20 transition duration-300 hover:-translate-y-0.5"
               >
-                {loading ? "Please Wait" : "Upload"}
+                <span className="relative z-10">
+                  {loading ? "Please Wait" : "Upload"}
+                </span>
               </button>
             </div>
             <label htmlFor="" className="text-white text-lg">
@@ -185,9 +187,9 @@ const AddCam = () => {
             />
             <button
               onClick={handleSubmit}
-              className="mt-4 px-8 py-3 bg-bgimage text-white font-semibold rounded hover:bg-bgdarkimage focus:outline-none focus:bg-bgdarkimage"
+              className="join-crew-button mt-4 inline-flex min-h-[3rem] items-center justify-center rounded-full px-8 py-3 text-sm font-black uppercase tracking-[0.12em] text-slate-950 shadow-lg shadow-black/20 transition duration-300 hover:-translate-y-0.5"
             >
-              Create
+              <span className="relative z-10">Create</span>
             </button>
           </div>
         </div>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useMediaQuery } from "react-responsive";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ServiceCard from "../components/CategoryComp/ServiceCard";
 import { Button } from "../components/Button";
 import SideBar from "../components/CategoryComp/SideBar";
@@ -96,12 +95,44 @@ const MOCK_PORTFOLIOS = [
   },
 ];
 
+const sortProducts = (items, sort) => {
+  const sortedProducts = [...items];
+
+  if (sort.priceAsc) {
+    return sortedProducts.sort((a, b) => Number(a.price) - Number(b.price));
+  }
+
+  if (sort.priceDesc) {
+    return sortedProducts.sort((a, b) => Number(b.price) - Number(a.price));
+  }
+
+  if (sort.popularAsc) {
+    return sortedProducts.sort(
+      (a, b) => Number(a.averageRating || 0) - Number(b.averageRating || 0)
+    );
+  }
+
+  if (sort.popularDesc) {
+    return sortedProducts.sort(
+      (a, b) => Number(b.averageRating || 0) - Number(a.averageRating || 0)
+    );
+  }
+
+  return items;
+};
+
 const CategoryPage = () => {
   const { categoryId } = useParams();
-  const { products, setProducts, filters, setFilters, applyFilters, setSort } =
-    useFilter();
+  const {
+    products,
+    setProducts,
+    filters,
+    setFilters,
+    applyFilters,
+    sort,
+    setSort,
+  } = useFilter();
   const [list, setList] = useState([]);
-  const isDesktop = useMediaQuery({ minWidth: 768 });
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const fetchData = async () => {
@@ -117,7 +148,7 @@ const CategoryPage = () => {
   useEffect(() => {
     setProducts([]);
     fetchData(); // Call the async function
-  }, [categoryId, filters, isDesktop, setProducts]);
+  }, [categoryId, setProducts]);
 
   useEffect(() => {
     // Filter products based on category after list is updated
@@ -130,7 +161,7 @@ const CategoryPage = () => {
     const apiProducts = categoryProducts.filter((product) => !product.isMock);
 
     if (apiProducts.length === 0) {
-      setProducts(applyFilters(mockProducts, filters));
+      setProducts(sortProducts(applyFilters(mockProducts, filters), sort));
       return;
     }
 
@@ -172,13 +203,13 @@ const CategoryPage = () => {
           filters
         );
         // Set the updated products with average rating, count, and state to the state
-        setProducts(filteredProducts);
+        setProducts(sortProducts(filteredProducts, sort));
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        setProducts(applyFilters(mockProducts, filters));
+        setProducts(sortProducts(applyFilters(mockProducts, filters), sort));
       });
-  }, [list, categoryId, filters, isDesktop, applyFilters, setProducts]);
+  }, [list, categoryId, filters, sort, applyFilters, setProducts]);
 
   useEffect(() => {
     console.log(products);
@@ -194,68 +225,27 @@ const CategoryPage = () => {
   };
 
   return (
-    <div className="pt-[68px] sm:pt-[76px] xl:pt-[84px]">
-      <div className="flex p-2 justify-between">
-        <nav className="flex" aria-label="Breadcrumb">
-          <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-            <li className="inline-flex items-center">
-              <Link
-                to={"/"}
-                className="inline-flex items-center text-md font-medium text-gray-100 hover:text-blue-600  dark:hover:text-white"
-              >
-                <svg
-                  className="w-3 h-3 me-2.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
-                </svg>
-                Category Page
-              </Link>
-            </li>
-            <li>
-              <div className="flex items-center">
-                <svg
-                  className="rtl:rotate-180 w-3 h-3 text-gray-100 mx-1"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 6 10"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="m1 9 4-4-4-4"
-                  />
-                </svg>
-                <span className="ms-1 text-md capitalize font-medium text-gray-100 md:ms-2">
-                  {categoryId}
-                </span>
-              </div>
-            </li>
-            {}
-          </ol>
-        </nav>
+    <div className="relative overflow-hidden bg-[#161515] pt-[68px] text-white sm:pt-[76px] xl:pt-[84px]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_14%,rgba(255,213,122,0.2),transparent_26%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(255,240,198,0.1),transparent_24%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[30rem] bg-gradient-to-b from-[#2a1d13]/80 via-[#1a1411]/72 to-transparent" />
 
-        <button
-          className={`p-3 mx-2 border border-red-600 rounded-xl transition-all duration-300 ${
-            isSidebarOpen
-              ? "bg-red-500 text-white"
-              : "bg-bgimage text-gray-900 hover:bg-bgimage/90"
-          }`}
-          onClick={toggleSidebar}
-        >
-          {isSidebarOpen ? (
-            <span> Close Sort Filters </span>
-          ) : (
-            <span> Open Sort Filters </span>
-          )}
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={toggleSidebar}
+        aria-label={isSidebarOpen ? "Close filters" : "Open filters"}
+        className={`absolute bottom-0 left-0 top-[68px] z-[70] flex w-7 items-start justify-center bg-[#6e655e] text-white shadow-[4px_0_18px_rgba(0,0,0,0.16)] transition duration-300 hover:bg-[#5f5751] sm:top-[76px] sm:w-8 xl:top-[84px] ${
+          isSidebarOpen ? "pointer-events-none opacity-0" : "opacity-100"
+        }`}
+        style={{
+          clipPath:
+            "polygon(0 0, 100% 0, 100% 78px, 68% 92px, 100% 106px, 100% 100%, 0 100%)",
+        }}
+      >
+        <span className="mt-4 block rotate-180 text-xs font-semibold uppercase tracking-[0.05em] [text-orientation:mixed] [writing-mode:vertical-rl] sm:mt-5 sm:text-sm">
+          Filter
+        </span>
+      </button>
 
       {/* Side Panel Drawer */}
       <div
@@ -271,17 +261,19 @@ const CategoryPage = () => {
         
         {/* Drawer Content */}
         <aside
-          className={`absolute left-0 top-0 h-full w-[280px] sm:w-[320px] bg-white shadow-2xl transition-transform duration-300 ease-in-out ${
+          className={`absolute left-0 top-0 h-full w-[312px] border-r border-white/10 bg-gray-950 text-white shadow-2xl shadow-black/50 transition-transform duration-300 ease-in-out sm:w-[360px] ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="flex flex-col h-full overflow-y-auto">
+          <div className="no-scrollbar flex h-full flex-col overflow-y-auto">
             {/* Drawer Header */}
-            <div className="flex items-center justify-between p-4 border-b">
-              <h2 className="text-xl font-bold text-gray-900">Filters</h2>
+            <div className="flex items-center justify-between border-b border-white/10 p-4">
+              <h2 className="text-xl font-black uppercase tracking-[0.14em] text-amber-100">
+                Filters
+              </h2>
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="p-2 rounded-full hover:bg-gray-100 text-gray-500 transition-colors"
+                className="rounded-full border border-white/10 bg-white/5 p-2 text-gray-200 transition-colors hover:bg-white/10"
                 aria-label="Close filters"
               >
                 <svg
@@ -302,8 +294,9 @@ const CategoryPage = () => {
             </div>
 
             <div className="flex flex-col py-6 pb-10">
-              <div className="flex justify-center items-center mb-6">
+              <div className="mb-6 flex items-center justify-center px-4">
                 <div
+                  className="w-full"
                   onClick={() => {
                     setFilters({
                       rating: null,
@@ -319,10 +312,12 @@ const CategoryPage = () => {
                     });
                   }}
                 >
-                  <Button>Clear Filters</Button>
+                  <Button className="w-full min-h-[3.35rem] rounded-[1.2rem] px-7 py-3.5 text-sm">
+                    Clear Filters
+                  </Button>
                 </div>
               </div>
-              <div className="px-4">
+              <div className="px-5">
                 <SideBar category={categoryId} />
               </div>
             </div>
@@ -330,9 +325,11 @@ const CategoryPage = () => {
         </aside>
       </div>
 
-      <div className="min-h-[800px] border pt-10 pb-10 px-4 sm:px-10">
-        <div className="flex flex-wrap justify-center gap-6">{Products}</div>
-      </div>
+      <section className="relative px-0 pb-0 pt-2">
+        <div className="min-h-[calc(100vh-11rem)] w-full rounded-t-[2.5rem] rounded-b-none bg-[linear-gradient(180deg,#ffe49a_0%,#ffc85c_24%,#f0ad43_68%,#dc8d1f_100%)] px-4 py-8 shadow-[0_24px_70px_rgba(0,0,0,0.2)] sm:px-6 sm:py-10 lg:px-8">
+          <div className="flex flex-wrap justify-center gap-6">{Products}</div>
+        </div>
+      </section>
     </div>
   );
 };

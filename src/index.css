@@ -158,6 +158,59 @@ body {
   animation: joinCrewSparkle 2.4s ease-in-out infinite;
 }
 
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.budget-range-input {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  pointer-events: none;
+}
+
+.budget-range-input::-webkit-slider-runnable-track {
+  height: 0;
+  background: transparent;
+}
+
+.budget-range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  border: 2px solid #fff4d6;
+  border-radius: 0;
+  background: #f2a62f;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.budget-range-input::-moz-range-track {
+  height: 0;
+  border: 0;
+  background: transparent;
+}
+
+.budget-range-input::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  border: 2px solid #fff4d6;
+  border-radius: 0;
+  background: #f2a62f;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-fade-up,
   .hero-video-motion,

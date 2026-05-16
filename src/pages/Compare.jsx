@@ -104,18 +104,18 @@ const ComparisonPage = () => {
                   <button
                     type="button"
                     onClick={() => navigate(`/category/${product1?.category}`)}
-                    className="px-8 py-1 mb-4 text-white capitalize font-semibold bg-gray-800 rounded-full dark:bg-gray-100 dark:text-gray-800"
+                    className="join-crew-button inline-flex min-h-[2.6rem] items-center justify-center rounded-full px-6 py-2 text-xs font-black capitalize tracking-[0.08em] text-slate-950 shadow-lg shadow-black/20 transition duration-300 hover:-translate-y-0.5"
                   >
-                    {product1?.category}{" "}
+                    <span className="relative z-10">{product1?.category}</span>
                   </button>
                 </td>
                 <td className="p-4">
                   <button
                     type="button"
                     onClick={() => navigate(`/category/${product2?.category}`)}
-                    className="px-8 py-1 mb-4 text-white capitalize font-semibold bg-gray-800 rounded-full dark:bg-gray-100 dark:text-gray-800"
+                    className="join-crew-button inline-flex min-h-[2.6rem] items-center justify-center rounded-full px-6 py-2 text-xs font-black capitalize tracking-[0.08em] text-slate-950 shadow-lg shadow-black/20 transition duration-300 hover:-translate-y-0.5"
                   >
-                    {product2?.category}{" "}
+                    <span className="relative z-10">{product2?.category}</span>
                   </button>
                 </td>
               </tr>

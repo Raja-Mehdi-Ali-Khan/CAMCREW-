@@ -53,9 +53,9 @@ const FavPage = () => {
           </p>
           <Link
             to="/category/media%20videography"
-            className="px-8 py-3 bg-bgimage text-gray-900 font-bold rounded-lg hover:bg-bgdarkimage transition duration-300 shadow-lg shadow-bgimage/20"
+            className="join-crew-button inline-flex min-h-[3rem] items-center justify-center rounded-full px-8 py-3 text-sm font-black uppercase tracking-[0.12em] text-slate-950 shadow-lg shadow-black/20 transition duration-300 hover:-translate-y-0.5"
           >
-            Go to Portfolios
+            <span className="relative z-10">Go to Portfolios</span>
           </Link>
         </div>
       ) : (
@@ -83,16 +83,16 @@ const FavPage = () => {
               <button
                 type="button"
                 onClick={clearCart}
-                className="flex items-center gap-2 px-6 py-3 border border-red-500/30 text-red-400 hover:bg-red-500 hover:text-white rounded-lg transition duration-300"
+                className="join-crew-button inline-flex min-h-[3rem] items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-black uppercase tracking-[0.1em] text-slate-950 shadow-lg shadow-black/20 transition duration-300 hover:-translate-y-0.5"
               >
-                <FiTrash2 />
-                Clear All
+                <FiTrash2 className="relative z-10" />
+                <span className="relative z-10">Clear All</span>
               </button>
               <Link
                 to="/"
-                className="flex items-center gap-2 px-8 py-3 bg-bgimage text-gray-900 font-bold rounded-lg hover:bg-bgdarkimage transition duration-300"
+                className="join-crew-button inline-flex min-h-[3rem] items-center justify-center gap-2 rounded-full px-8 py-3 text-sm font-black uppercase tracking-[0.12em] text-slate-950 shadow-lg shadow-black/20 transition duration-300 hover:-translate-y-0.5"
               >
-                Continue Booking
+                <span className="relative z-10">Continue Booking</span>
               </Link>
             </div>
           </div>
