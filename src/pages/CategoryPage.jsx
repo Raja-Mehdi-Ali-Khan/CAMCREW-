@@ -121,6 +121,9 @@ const sortProducts = (items, sort) => {
   return items;
 };
 
+const headerOffsetClass = "top-[68px] sm:top-[76px] xl:top-[84px]";
+const headerHeightClass = "h-[calc(100vh-68px)] sm:h-[calc(100vh-76px)] xl:h-[calc(100vh-84px)]";
+
 const CategoryPage = () => {
   const { categoryId } = useParams();
   const {
@@ -234,7 +237,7 @@ const CategoryPage = () => {
         type="button"
         onClick={toggleSidebar}
         aria-label={isSidebarOpen ? "Close filters" : "Open filters"}
-        className={`absolute bottom-0 left-0 top-[68px] z-[70] flex w-7 items-start justify-center bg-[#6e655e] text-white shadow-[4px_0_18px_rgba(0,0,0,0.16)] transition duration-300 hover:bg-[#5f5751] sm:top-[76px] sm:w-8 xl:top-[84px] ${
+        className={`fixed bottom-0 left-0 ${headerOffsetClass} z-[70] flex w-7 items-start justify-center bg-[#6e655e] text-white shadow-[4px_0_18px_rgba(0,0,0,0.16)] transition duration-300 hover:bg-[#5f5751] sm:w-8 ${
           isSidebarOpen ? "pointer-events-none opacity-0" : "opacity-100"
         }`}
         style={{
@@ -261,7 +264,7 @@ const CategoryPage = () => {
         
         {/* Drawer Content */}
         <aside
-          className={`absolute left-0 top-0 h-full w-[312px] border-r border-white/10 bg-gray-950 text-white shadow-2xl shadow-black/50 transition-transform duration-300 ease-in-out sm:w-[360px] ${
+          className={`absolute left-0 ${headerOffsetClass} ${headerHeightClass} w-[312px] border-r border-white/10 bg-gray-950 text-white shadow-2xl shadow-black/50 transition-transform duration-300 ease-in-out sm:w-[360px] ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
