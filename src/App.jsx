@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import CartProvider from "./context/ServiceContext";
 import FilterProvider from "./context/FilterContext";
 import Header from "./components/Header";
+import ScrollToTop from "./components/ScrollToTop";
 import Form from "./pages/Form";
 import EditProfilePage from "./pages/User";
 import AddCam from "./pages/AddCam";
@@ -46,6 +47,7 @@ const App = () => {
           <ComparisonProvider>
             <CartProvider>
               <Router>
+                <ScrollToTop />
                 <div className="flex flex-col min-h-screen bg-[rgb(22,21,21)]">
                   <Header />
                   <main className="flex-grow">
