@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CSS Custom Properties for Theme Colors */
+:root {
+  --color-bgimage: #ffd278ff;
+  --color-bgdarkimage: #ffae00ff;
+  --color-text-primary: rgba(29, 29, 29, 0.8);
+  --color-heading: rgb(24, 24, 29);
+  --color-bg: #fef6f6;
+  --color-footer-bg: #201d1d;
+  --color-btn: #e40046;
+  --color-helper: #8490ff;
+  --color-border: rgba(98, 84, 243, 0.5);
+  --color-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  --border-radius-sm: 0.5rem;
+  --border-radius-md: 1rem;
+  --border-radius-lg: 1.5rem;
+  --border-radius-xl: 2rem;
+  --transition-base: 300ms ease-in-out;
+}
+
 body {
   background-color: rgb(22, 21, 21);
   overflow-x: hidden;
@@ -11,6 +30,7 @@ body {
 }
 
 html {
+  scroll-behavior: smooth;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -18,6 +38,51 @@ html {
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none;
+}
+
+/* Global Interactive Element Transitions */
+a,
+button,
+input,
+textarea,
+select,
+[role="button"] {
+  transition: all var(--transition-base);
+}
+
+/* Focus Visible States for Accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-bgimage);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-sm);
+}
+
+/* Image Hover Effects */
+img {
+  transition: all var(--transition-base);
+}
+
+img:hover {
+  filter: brightness(1.1);
+}
+
+/* Card and Interactive Element Hover Effects */
+.hover-lift {
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Smooth Scale on Hover */
+.hover-scale {
+  transition: transform var(--transition-base);
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
 }
 
 .language-selector .goog-te-gadget {
@@ -85,10 +150,12 @@ body {
 
 .hero-fade-up {
   animation: heroFadeUp 700ms ease-out both;
+  will-change: transform, opacity;
 }
 
 .hero-video-motion {
   animation: heroVideoDrift 18s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
 @keyframes joinCrewShine {
@@ -129,6 +196,15 @@ body {
     linear-gradient(135deg, #fff0be 0%, #ffd36d 38%, #ffbf4d 68%, #f2a62f 100%);
   overflow: hidden;
   position: relative;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.join-crew-button:hover {
+  box-shadow: 0 8px 24px rgba(242, 166, 47, 0.4);
+}
+
+.join-crew-button:active {
+  transform: scale(0.98);
 }
 
 .join-crew-button::before {
@@ -145,6 +221,7 @@ body {
   position: absolute;
   width: 40%;
   animation: joinCrewShine 3.8s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .join-crew-button::after {
@@ -156,6 +233,7 @@ body {
   inset: 0;
   position: absolute;
   animation: joinCrewSparkle 2.4s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .no-scrollbar {
@@ -211,13 +289,75 @@ body {
   pointer-events: auto;
 }
 
+/* Utility Classes for Quick Wins */
+.transition-smooth {
+  transition: all var(--transition-base);
+}
+
+.border-radius-standard {
+  border-radius: var(--border-radius-xl);
+}
+
+/* Enhanced Link Styles */
+a:not(.no-underline-effect) {
+  position: relative;
+}
+
+a:not(.no-underline-effect):hover {
+  color: var(--color-bgimage);
+}
+
+/* Card Shadow Enhancements */
+.card-shadow {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.card-shadow:hover {
+  box-shadow: 0 12px 28px rgba(255, 210, 120, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Loading State */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
   .hero-fade-up,
   .hero-video-motion,
   .join-crew-button::before,
   .join-crew-button::after {
     animation: none !important;
     transform: none !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
   }
 }
 

@@ -88,7 +88,7 @@ const Header = () => {
   return (
     <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-gray-950/95 text-white shadow-lg shadow-black/20 backdrop-blur-sm">
       <section className="w-full">
-        <nav className="flex min-h-[68px] items-center justify-between gap-4 px-4 sm:min-h-[76px] sm:px-6 xl:min-h-[84px] xl:px-8">
+        <nav className="flex min-h-[61px] items-center justify-between gap-4 px-4 sm:min-h-[68px] sm:px-6 xl:min-h-[76px] xl:px-8">
           <div className="flex min-w-0 flex-1 items-center gap-8">
             <Link
               className="shrink-0 text-2xl font-black tracking-tight text-white transition hover:text-bgimage sm:text-3xl"
@@ -152,13 +152,13 @@ const Header = () => {
 
           <div className="hidden shrink-0 items-center gap-4 xl:flex">
             <button
-              className="relative flex h-11 w-11 items-center justify-center rounded-md border border-white/10 bg-white/5 text-bgimage transition hover:bg-white/10"
+              className="relative flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/5 text-bgimage transition hover:bg-white/10"
               type="button"
               onClick={() => navigate("/cart")}
               aria-label="Open favourites"
             >
-              <FaStar className="h-6 w-6" />
-              <span className="absolute -right-2 -top-2 flex h-6 min-w-6 items-center justify-center rounded-full bg-bgimage px-1 text-xs font-black text-gray-950">
+              <FaStar className="h-5 w-5" />
+              <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-bgimage px-1 text-[11px] font-black text-gray-950">
                 {itemAmount}
               </span>
             </button>
@@ -183,13 +183,13 @@ const Header = () => {
 
           <div className="flex items-center gap-2 xl:hidden">
             <button
-              className="relative flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-bgimage transition hover:bg-white/10"
+              className="relative flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-bgimage transition hover:bg-white/10"
               type="button"
               onClick={() => navigate("/cart")}
               aria-label="Open favourites"
             >
-              <FaStar className="h-5 w-5" />
-              <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-bgimage px-1 text-[11px] font-black text-gray-950">
+              <FaStar className="h-4 w-4" />
+              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-bgimage px-1 text-[10px] font-black text-gray-950">
                 {itemAmount}
               </span>
             </button>
@@ -249,7 +249,7 @@ const Header = () => {
           isMenu ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex min-h-[68px] items-center justify-between border-b border-white/10 px-5">
+        <div className="flex min-h-[61px] items-center justify-between border-b border-white/10 px-5">
           <p className="text-xl font-black tracking-tight">CamCrew</p>
           <button
             type="button"
