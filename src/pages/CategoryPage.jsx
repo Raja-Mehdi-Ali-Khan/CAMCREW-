@@ -121,8 +121,13 @@ const sortProducts = (items, sort) => {
   return items;
 };
 
-const headerOffsetClass = "top-[68px] sm:top-[76px] xl:top-[84px]";
-const headerHeightClass = "h-[calc(100vh-68px)] sm:h-[calc(100vh-76px)] xl:h-[calc(100vh-84px)]";
+const leftRibbonTopClass = "top-[98px] sm:top-[112px] xl:top-[124px]";
+const defaultSortState = {
+  priceAsc: false,
+  priceDesc: false,
+  popularAsc: false,
+  popularDesc: false,
+};
 
 const CategoryPage = () => {
   const { categoryId } = useParams();
@@ -137,6 +142,14 @@ const CategoryPage = () => {
   } = useFilter();
   const [list, setList] = useState([]);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const activeFilterCount = [
+    filters.rating !== null,
+    filters.price !== null,
+    Boolean(filters.pincode),
+    Boolean(filters.state),
+    sort.priceAsc || sort.priceDesc || sort.popularAsc || sort.popularDesc,
+  ].filter(Boolean).length;
+  const hasActiveFilters = activeFilterCount > 0;
 
   const fetchData = async () => {
     try {
@@ -227,8 +240,18 @@ const CategoryPage = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
+  const clearAllFilters = () => {
+    setFilters({
+      rating: null,
+      price: null,
+      pincode: null,
+      state: null,
+    });
+    setSort(defaultSortState);
+  };
+
   return (
-    <div className="relative overflow-hidden bg-[#161515] pt-[68px] text-white sm:pt-[76px] xl:pt-[84px]">
+    <div className="relative overflow-hidden bg-[#161515] pt-[61px] text-white sm:pt-[68px] xl:pt-[76px]">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_14%,rgba(255,213,122,0.2),transparent_26%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(255,240,198,0.1),transparent_24%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[30rem] bg-gradient-to-b from-[#2a1d13]/80 via-[#1a1411]/72 to-transparent" />
@@ -237,16 +260,45 @@ const CategoryPage = () => {
         type="button"
         onClick={toggleSidebar}
         aria-label={isSidebarOpen ? "Close filters" : "Open filters"}
-        className={`fixed bottom-0 left-0 ${headerOffsetClass} z-[70] flex w-7 items-start justify-center bg-[#6e655e] text-white shadow-[4px_0_18px_rgba(0,0,0,0.16)] transition duration-300 hover:bg-[#5f5751] sm:w-8 ${
+        aria-expanded={isSidebarOpen}
+        className={`group fixed left-0 ${leftRibbonTopClass} z-[70] overflow-hidden rounded-r-[1.25rem] border border-l-0 border-white/10 bg-[linear-gradient(180deg,rgba(30,27,23,0.97),rgba(48,39,31,0.95))] text-white shadow-[0_12px_26px_rgba(0,0,0,0.24)] backdrop-blur-md transition duration-300 hover:border-amber-200/25 hover:bg-[linear-gradient(180deg,rgba(36,32,27,0.98),rgba(58,47,37,0.96))] hover:shadow-[0_16px_30px_rgba(0,0,0,0.28)] ${
           isSidebarOpen ? "pointer-events-none opacity-0" : "opacity-100"
         }`}
-        style={{
-          clipPath:
-            "polygon(0 0, 100% 0, 100% 78px, 68% 92px, 100% 106px, 100% 100%, 0 100%)",
-        }}
       >
-        <span className="mt-4 block rotate-180 text-xs font-semibold uppercase tracking-[0.05em] [text-orientation:mixed] [writing-mode:vertical-rl] sm:mt-5 sm:text-sm">
-          Filter
+        <span className="block h-1 w-full bg-[linear-gradient(90deg,#fff1c5_0%,#ffd369_42%,#f2a62f_100%)]" />
+        <span className="pointer-events-none absolute inset-y-0 left-0 w-full bg-[linear-gradient(90deg,rgba(255,255,255,0.12),transparent_58%)] opacity-0 transition duration-300 group-hover:opacity-100" />
+        <span className="pointer-events-none absolute inset-y-0 right-0 w-px bg-white/10" />
+        <span className="flex min-h-[6.75rem] w-[2.8rem] flex-col items-center justify-between px-1 py-2.5 sm:min-h-[7.2rem] sm:w-[3rem] sm:px-1.5 sm:py-3">
+          <span className="inline-flex h-6 w-6 items-center justify-center text-amber-100/90 transition duration-300 group-hover:translate-x-0.5 group-hover:text-amber-50">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-3.5 w-3.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </span>
+          <span className="flex flex-col items-center gap-1">
+            <span className="text-[11px] font-black uppercase tracking-[0.12em] text-amber-50/95 transition duration-300 group-hover:text-white [writing-mode:vertical-rl]">
+              Filters
+            </span>
+            <span
+              className={`inline-flex min-h-[1.45rem] min-w-[1.45rem] items-center justify-center rounded-full border px-1 text-[8px] font-black uppercase tracking-[0.08em] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition duration-300 group-hover:border-amber-200/30 ${
+                hasActiveFilters
+                  ? "border-amber-200/20 bg-amber-200/10 text-amber-50"
+                  : "border-white/10 bg-white/[0.05] text-gray-300"
+              }`}
+            >
+              {hasActiveFilters ? activeFilterCount : "All"}
+            </span>
+          </span>
         </span>
       </button>
 
@@ -264,61 +316,65 @@ const CategoryPage = () => {
         
         {/* Drawer Content */}
         <aside
-          className={`absolute left-0 ${headerOffsetClass} ${headerHeightClass} w-[312px] border-r border-white/10 bg-gray-950 text-white shadow-2xl shadow-black/50 transition-transform duration-300 ease-in-out sm:w-[360px] ${
+          className={`absolute left-0 top-0 h-screen w-[320px] border-r border-white/10 bg-[linear-gradient(180deg,rgba(16,15,14,0.99),rgba(28,24,20,0.98))] text-white shadow-2xl shadow-black/50 transition-transform duration-300 ease-in-out sm:w-[380px] ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <div className="no-scrollbar flex h-full flex-col overflow-y-auto">
             {/* Drawer Header */}
-            <div className="flex items-center justify-between border-b border-white/10 p-4">
-              <h2 className="text-xl font-black uppercase tracking-[0.14em] text-amber-100">
-                Filters
-              </h2>
-              <button
-                onClick={() => setSidebarOpen(false)}
-                className="rounded-full border border-white/10 bg-white/5 p-2 text-gray-200 transition-colors hover:bg-white/10"
-                aria-label="Close filters"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
+            <div className="border-b border-white/10 px-4 py-4 sm:px-5">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-100/75">
+                    Portfolio Filters
+                  </p>
+                  <h2 className="mt-1 text-lg font-black uppercase tracking-[0.14em] text-white">
+                    Refine Results
+                  </h2>
+                </div>
+                <div className="flex items-center gap-2">
+                  {hasActiveFilters ? (
+                    <button
+                      type="button"
+                      onClick={clearAllFilters}
+                      className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-gray-200 transition-colors hover:border-amber-200/20 hover:bg-white/10 hover:text-amber-100"
+                    >
+                      Clear
+                    </button>
+                  ) : null}
+                  <button
+                    type="button"
+                    onClick={() => setSidebarOpen(false)}
+                    className="rounded-full border border-white/10 bg-white/5 p-2 text-gray-200 transition-colors hover:bg-white/10"
+                    aria-label="Close filters"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div className="flex flex-col py-6 pb-10">
               <div className="mb-6 flex items-center justify-center px-4">
-                <div
-                  className="w-full"
-                  onClick={() => {
-                    setFilters({
-                      rating: null,
-                      price: null,
-                      pincode: null,
-                      state: null,
-                    });
-                    setSort({
-                      priceAsc: false,
-                      priceDesc: false,
-                      popularAsc: false,
-                      popularDesc: false,
-                    });
-                  }}
+                <Button
+                  className="w-full min-h-[3.35rem] rounded-[1.2rem] px-7 py-3.5 text-sm"
+                  onClick={clearAllFilters}
                 >
-                  <Button className="w-full min-h-[3.35rem] rounded-[1.2rem] px-7 py-3.5 text-sm">
-                    Clear Filters
-                  </Button>
-                </div>
+                  {hasActiveFilters ? "Reset All Filters" : "Filters Ready"}
+                </Button>
               </div>
               <div className="px-5">
                 <SideBar category={categoryId} />
