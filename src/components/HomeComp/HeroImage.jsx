@@ -7,6 +7,7 @@ import {
   faShieldHeart,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const HeroImage = () => {
   const highlights = [
@@ -78,17 +79,16 @@ const HeroImage = () => {
                 className="relative z-10 transition duration-300 group-hover:translate-x-1"
               />
             </a>
-            <a
-              rel="noopener noreferrer"
-              href="#featured-services"
+            <Link
+              to="/category/media videography"
               className="group inline-flex min-h-[3.25rem] flex-1 basis-[11rem] items-center justify-center gap-2 rounded-full border border-slate-900/10 bg-slate-950 px-4 py-3 text-sm font-bold text-amber-100 shadow-lg shadow-black/15 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:bg-slate-900 min-[430px]:min-h-[3.5rem] min-[430px]:px-5 min-[430px]:text-base sm:min-h-12 sm:flex-none sm:basis-auto sm:px-5 sm:text-sm"
             >
               <FontAwesomeIcon
                 icon={faCirclePlay}
                 className="transition duration-300 group-hover:scale-110"
               />
-              See what you can book
-            </a>
+              See who you can book
+            </Link>
           </div>
 
           <div
