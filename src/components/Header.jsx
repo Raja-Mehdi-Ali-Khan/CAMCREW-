@@ -91,10 +91,10 @@ const Header = () => {
         <nav className="flex min-h-[61px] items-center justify-between gap-4 px-4 sm:min-h-[68px] sm:px-6 xl:min-h-[76px] xl:px-8">
           <div className="flex min-w-0 flex-1 items-center gap-8">
             <Link
-              className="shrink-0 text-2xl font-black tracking-tight text-white transition hover:text-bgimage sm:text-3xl"
+              className="brand-shine no-underline-effect shrink-0 text-2xl font-black tracking-tight text-white sm:text-3xl"
               to="/"
             >
-              CamCrew
+              <span className="brand-shine__text">CamCrew</span>
             </Link>
 
             <ul className="hidden flex-1 items-center justify-center gap-8 text-sm font-semibold text-gray-200 xl:flex">
@@ -250,7 +250,9 @@ const Header = () => {
         }`}
       >
         <div className="flex min-h-[61px] items-center justify-between border-b border-white/10 px-5">
-          <p className="text-xl font-black tracking-tight">CamCrew</p>
+          <p className="brand-shine no-underline-effect text-xl font-black tracking-tight text-white">
+            <span className="brand-shine__text">CamCrew</span>
+          </p>
           <button
             type="button"
             onClick={handleCloseMenu}

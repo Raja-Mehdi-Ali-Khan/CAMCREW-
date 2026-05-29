@@ -339,6 +339,68 @@ a:not(.no-underline-effect):hover {
   animation: shimmer 2s infinite;
 }
 
+@keyframes brandShineSweep {
+  0% {
+    transform: translateX(-145%) skewX(-16deg);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.18;
+  }
+  48% {
+    opacity: 0.95;
+  }
+  82% {
+    opacity: 0.08;
+  }
+  100% {
+    transform: translateX(250%) skewX(-16deg);
+    opacity: 0;
+  }
+}
+
+.brand-shine {
+  display: inline-flex;
+  overflow: hidden;
+  position: relative;
+  text-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+}
+
+.brand-shine__text {
+  display: inline-block;
+  letter-spacing: -0.05em;
+  position: relative;
+  z-index: 1;
+}
+
+.brand-shine::after {
+  background: linear-gradient(
+    110deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.06) 24%,
+    rgba(255, 248, 226, 0.92) 46%,
+    rgba(255, 211, 109, 0.34) 58%,
+    transparent 100%
+  );
+  content: "";
+  inset: -12% auto -12% -18%;
+  position: absolute;
+  width: 36%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.brand-shine:hover {
+  color: #fff5d7;
+  text-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.24),
+    0 0 14px rgba(255, 211, 109, 0.08);
+}
+
+.brand-shine:hover::after {
+  animation: brandShineSweep 820ms ease-out 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -351,7 +413,8 @@ a:not(.no-underline-effect):hover {
   .hero-fade-up,
   .hero-video-motion,
   .join-crew-button::before,
-  .join-crew-button::after {
+  .join-crew-button::after,
+  .brand-shine::after {
     animation: none !important;
     transform: none !important;
   }
