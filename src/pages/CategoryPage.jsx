@@ -233,7 +233,7 @@ const CategoryPage = () => {
 
   // list.map((categories) => console.log(categories.category == categoryId));
   const Products = products.map((item) => (
-    <ServiceCard key={item._id} product={item} />
+    <ServiceCard key={item._id} crew={item} />
   ));
 
   const toggleSidebar = () => {

@@ -17,7 +17,7 @@ import { apiUrl } from "../config/api";
 
 const Header = () => {
   const [isMenu, setMenuOpen] = useState(false);
-  const { selectedProducts } = useComparison();
+  const { selectedCrews } = useComparison();
   const { userData: appUserData, updateUser } = useAppUser();
   const { isLoaded, isSignedIn, user: clerkUser } = useClerkUser();
   const { signOut } = useClerk();
@@ -143,7 +143,7 @@ const Header = () => {
                 >
                   Compare
                   <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-bgimage px-2 text-xs font-black text-gray-950">
-                    {selectedProducts?.length}
+                    {selectedCrews?.length}
                   </span>
                 </Link>
               </li>
@@ -359,7 +359,7 @@ const Header = () => {
                 >
                   Compare
                   <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-bgimage px-2 text-xs font-black text-gray-950">
-                    {selectedProducts?.length}
+                    {selectedCrews?.length}
                   </span>
                 </Link>
               </li>

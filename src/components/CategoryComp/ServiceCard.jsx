@@ -13,17 +13,17 @@ import { useUser } from "../../context/UserContext";
 import { useComparison } from "../../context/ComparsionContext";
 import LoginRequiredModal from "../LoginRequiredModal";
 
-const ServiceCard = ({ product }) => {
+const ServiceCard = ({ crew }) => {
   const { addToCart } = useCart();
   const [showModal, setShowModal] = useState(false);
-  const { addProduct } = useComparison();
+  const { addCrew } = useComparison();
   const { userData } = useUser();
   const isSignedIn = !!userData;
   const navigate = useNavigate();
 
-  const imageCount = product?.image?.length || 0;
-  const reviewCount = product?.count || 0;
-  const locationLabel = [product?.pincode, product?.state]
+  const imageCount = crew?.image?.length || 0;
+  const reviewCount = crew?.count || 0;
+  const locationLabel = [crew?.pincode, crew?.state]
     .filter(Boolean)
     .join(", ");
 
@@ -31,7 +31,7 @@ const ServiceCard = ({ product }) => {
     e.stopPropagation();
 
     if (isSignedIn) {
-      addToCart(product, product?._id);
+      addToCart(crew, crew?._id);
       toast.success("Added to FavList", {
         position: "top-right",
         autoClose: 2000,
@@ -50,8 +50,8 @@ const ServiceCard = ({ product }) => {
 
   const handleCompareClick = (e) => {
     e.stopPropagation();
-    addProduct(product);
-    toast.success("Added to Compare", {
+    addCrew(crew);
+    toast.success("Added to compare line-up", {
       position: "top-right",
       autoClose: 2000,
       hideProgressBar: false,
@@ -67,13 +67,13 @@ const ServiceCard = ({ product }) => {
   return (
     <>
       <article
-        onClick={() => navigate(`/product/${product?._id}`)}
+        onClick={() => navigate(`/product/${crew?._id}`)}
         className="group relative flex min-h-[34rem] w-full max-w-[23rem] cursor-pointer flex-col overflow-hidden rounded-[28px] border border-white/10 bg-gray-950/95 text-gray-100 shadow-[0_24px_60px_rgba(15,23,42,0.28)] transition duration-300 hover:-translate-y-1.5 hover:border-bgimage/60 hover:shadow-[0_28px_70px_rgba(15,23,42,0.34)]"
       >
         <div className="relative h-64 overflow-hidden bg-[linear-gradient(135deg,#2b1d12_0%,#1d1510_52%,#0f172a_100%)]">
           <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between p-4">
             <span className="rounded-full border border-amber-200/25 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-amber-100 shadow-sm backdrop-blur-sm">
-              {product?.category || "Portfolio"}
+              {crew?.category || "Portfolio"}
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-950/88 px-3 py-1 text-[11px] font-semibold text-white shadow-sm">
               <FaRegImages className="text-[11px] text-[#f6c65b]" />
@@ -83,8 +83,8 @@ const ServiceCard = ({ product }) => {
 
           <img
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-            src={product?.image?.[0]}
-            alt={product?.title}
+            src={crew?.image?.[0]}
+            alt={crew?.title}
           />
 
           <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/55 via-black/20 to-transparent" />
@@ -95,7 +95,7 @@ const ServiceCard = ({ product }) => {
                 Starting at
               </p>
               <p className="mt-1 text-2xl font-black leading-none">
-                Rs. {product?.price}
+                Rs. {crew?.price}
                 <span className="ml-1 text-xs font-semibold text-amber-100/80">
                   / day
                 </span>
@@ -116,17 +116,17 @@ const ServiceCard = ({ product }) => {
         <div className="flex flex-1 flex-col p-5">
           <div className="min-w-0">
             <h5 className="line-clamp-2 text-[1.35rem] font-black leading-tight text-white">
-              {product?.title}
+              {crew?.title}
             </h5>
             <p className="mt-2 line-clamp-2 text-sm leading-6 text-gray-300">
-              {product?.description}
+              {crew?.description}
             </p>
           </div>
 
           <div className="mt-5 flex flex-wrap items-center gap-2.5">
             <div className="inline-flex items-center gap-2 rounded-full bg-bgimage px-3 py-2 text-sm font-semibold text-slate-950">
-              {Star(product?.averageRating, true)}
-              <span>{Number(product?.averageRating || 0).toFixed(1)}</span>
+              {Star(crew?.averageRating, true)}
+              <span>{Number(crew?.averageRating || 0).toFixed(1)}</span>
             </div>
             <div className="rounded-full bg-white/10 px-3 py-2 text-sm font-medium text-gray-300">
               {reviewCount} review{reviewCount === 1 ? "" : "s"}

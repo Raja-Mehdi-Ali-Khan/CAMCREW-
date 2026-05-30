@@ -1,46 +1,36 @@
 import { createContext, useContext, useState } from "react";
 
-
 export const ComparisonContext = createContext();
 
-
 export const ComparisonProvider = ({ children }) => {
-  // State to store the selected products for comparison
-  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [selectedCrews, setSelectedCrews] = useState([]);
 
-  const addProduct = (product) => {
-
-    if (selectedProducts.length === 2) {
-      alert("Already selected two cameramen for comparison");
+  const addCrew = (crew) => {
+    if (selectedCrews.length === 2) {
+      alert("You can compare up to two crews at a time.");
       return;
     }
 
-    if (!selectedProducts.some((p) => p._id === product._id)) {
-
-      setSelectedProducts((prevProducts) => [...prevProducts, product]);
+    if (!selectedCrews.some((selectedCrew) => selectedCrew._id === crew._id)) {
+      setSelectedCrews((previousCrews) => [...previousCrews, crew]);
     } else {
- 
-      console.log("Product already added for comparison");
+      console.log("Crew already added for comparison");
     }
   };
 
-  // Function to remove a product from the comparison list
-  const removeProduct = (productId) => {
-    // Filter out the product with the given productId
-    const updatedProducts = selectedProducts.filter((p) => p._id !== productId);
-    setSelectedProducts(updatedProducts);
+  const removeCrew = (crewId) => {
+    const updatedCrews = selectedCrews.filter((crew) => crew._id !== crewId);
+    setSelectedCrews(updatedCrews);
   };
 
-  // Function to clear all products from the comparison list
   const clearComparison = () => {
-    setSelectedProducts([]);
+    setSelectedCrews([]);
   };
 
-  // Value object to provide in the context
   const value = {
-    selectedProducts,
-    addProduct,
-    removeProduct,
+    selectedCrews,
+    addCrew,
+    removeCrew,
     clearComparison,
   };
 
