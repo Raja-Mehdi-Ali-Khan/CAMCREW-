@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import LanguageSelector from "./LanguageSelector";
 
@@ -27,7 +28,7 @@ const Footer = () => {
               aerial coverage, and media work with a booking flow built around
               real availability.
             </p>
-            <div className="mt-3 max-w-[14rem]">
+            <div className="mt-4 max-w-[14rem]">
               <LanguageSelector />
             </div>
           </div>
@@ -101,12 +102,20 @@ const Footer = () => {
                 </a>
               </div>
             </div>
+            <div className="mt-5">
+              <Link
+                to="/form"
+                className="join-crew-button inline-flex min-h-[2.8rem] items-center justify-center rounded-full px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.12em] text-slate-950 shadow-lg shadow-black/20 transition duration-300 hover:-translate-y-0.5"
+              >
+                <span className="relative z-10">Join the Crew</span>
+              </Link>
+            </div>
           </div>
         </div>
 
         <div className="mt-5 border-t border-white/10 pt-3">
           <div className="flex flex-col justify-between gap-2 text-[11px] text-gray-400 md:flex-row md:items-center">
-            <p>© {currentYear} CamCrew. All rights reserved.</p>
+            <p>&copy; {currentYear} CamCrew. All rights reserved.</p>
             <div className="flex flex-wrap gap-2.5">
               <a href="#" className="transition hover:text-bgimage">
                 Privacy policy

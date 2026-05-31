@@ -121,11 +121,6 @@ const Header = () => {
                   Contact Us
                 </a>
               </li>
-              <li className={` ${appUserData?.isCameraman ? "hidden" : ""} `}>
-                <Link to="/form" className="transition hover:text-bgimage">
-                  Join the Crew
-                </Link>
-              </li>
               <li className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}>
                 <Link to="/edituser" className="transition hover:text-bgimage">
                   Edit Profile
@@ -317,17 +312,6 @@ const Header = () => {
                 >
                   Contact Us
                 </a>
-              </li>
-              <li
-                onClick={handleCloseMenu}
-                className={` ${appUserData?.isCameraman ? "hidden" : ""} `}
-              >
-                <Link
-                  to="/form"
-                  className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
-                >
-                  Join the Crew
-                </Link>
               </li>
               <li
                 onClick={handleCloseMenu}
