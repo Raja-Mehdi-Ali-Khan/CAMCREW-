@@ -85,6 +85,17 @@ const Header = () => {
     setMenuOpen(false);
   };
 
+  useEffect(() => {
+    if (isMenu) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMenu]);
+
   return (
     <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-gray-950/95 text-white shadow-lg shadow-black/20 backdrop-blur-sm">
       <section className="w-full">
@@ -240,7 +251,7 @@ const Header = () => {
       />
 
       <aside
-        className={`fixed right-0 top-0 z-50 flex h-screen w-[min(22rem,86vw)] flex-col border-l border-white/10 bg-gray-950 text-white shadow-2xl shadow-black/50 transition-transform duration-300 ease-out xl:hidden ${
+        className={`fixed inset-y-0 right-0 z-50 flex h-[100dvh] w-[min(22rem,86vw)] flex-col border-l border-white/10 bg-gray-950 text-white shadow-2xl shadow-black/50 transition-transform duration-300 ease-out xl:hidden ${
           isMenu ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -271,102 +282,109 @@ const Header = () => {
           </button>
         </div>
 
-        <div className="flex flex-1 flex-col justify-between overflow-y-auto px-5 py-6">
-          <div>
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-bgimage">
-              Navigation
-            </p>
-            <ul className="flex flex-col space-y-2 text-sm font-semibold">
-              <li>
-                <Link
-                  to="/"
+        <div className="flex flex-1 flex-col overflow-y-auto no-scrollbar">
+          <div className="flex min-h-full flex-col justify-between px-5 py-6">
+            <div className="mb-8">
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-bgimage">
+                Navigation
+              </p>
+              <ul className="flex flex-col space-y-2 text-sm font-semibold">
+                <li>
+                  <Link
+                    to="/"
+                    onClick={handleCloseMenu}
+                    className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href="#category"
+                    onClick={handleCloseMenu}
+                    className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
+                  >
+                    Category
+                  </a>
+                </li>
+                <li>
+                  <Link
+                    to="/category/media videography"
+                    onClick={handleCloseMenu}
+                    className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
+                  >
+                    Portfolios
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href="#footer"
+                    onClick={handleCloseMenu}
+                    className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
+                  >
+                    Contact Us
+                  </a>
+                </li>
+                <li
                   onClick={handleCloseMenu}
-                  className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
+                  className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}
                 >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="#category"
+                  <Link
+                    to="/edituser"
+                    className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
+                  >
+                    Edit Profile
+                  </Link>
+                </li>
+                <li
                   onClick={handleCloseMenu}
-                  className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
+                  className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}
                 >
-                  Category
-                </a>
-              </li>
-              <li>
-                <Link
-                  to="/category/media videography"
-                  onClick={handleCloseMenu}
-                  className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
-                >
-                  Portfolios
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="#footer"
-                  onClick={handleCloseMenu}
-                  className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
-                >
-                  Contact Us
-                </a>
-              </li>
-              <li
-                onClick={handleCloseMenu}
-                className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}
-              >
-                <Link
-                  to="/edituser"
-                  className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
-                >
-                  Edit Profile
-                </Link>
-              </li>
-              <li
-                onClick={handleCloseMenu}
-                className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}
-              >
-                <Link
-                  to="/add"
-                  className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
-                >
-                  Add Service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/compare"
-                  onClick={handleCloseMenu}
-                  className="flex items-center justify-between rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
-                >
-                  Compare
-                  <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-bgimage px-2 text-xs font-black text-gray-950">
-                    {selectedCrews?.length}
-                  </span>
-                </Link>
-              </li>
-            </ul>
-          </div>
+                  <Link
+                    to="/add"
+                    className="block rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
+                  >
+                    Add Service
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/compare"
+                    onClick={handleCloseMenu}
+                    className="flex items-center justify-between rounded-md border border-transparent px-3 py-3 transition hover:border-white/10 hover:bg-white/5 hover:text-bgimage"
+                  >
+                    Compare
+                    <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-bgimage px-2 text-xs font-black text-gray-950">
+                      {selectedCrews?.length}
+                    </span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-          <div className="mt-8 border-t border-white/10 pt-5">
-            <Show when="signed-out">
-              <div className="space-y-3">
-                <SignInButton mode="modal">
-                  <Button className="w-full">Login / Sign Up</Button>
-                </SignInButton>
-              </div>
-            </Show>
-            <Show when="signed-in">
-              <div className="flex flex-col items-start gap-3">
-                <p className="truncate text-sm font-semibold text-gray-200">
-                  Hello {appUserData?.firstname || clerkFirstName || "User"}
-                </p>
-                <UserButton afterSignOutUrl="/" />
-                <Button onClick={handleLogout}>LogOut</Button>
-              </div>
-            </Show>
+            <div className="border-t border-white/10 pt-8">
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-bgimage">
+                Account
+              </p>
+              <Show when="signed-out">
+                <div className="space-y-3">
+                  <SignInButton mode="modal">
+                    <Button className="w-full">Login / Sign Up</Button>
+                  </SignInButton>
+                </div>
+              </Show>
+              <Show when="signed-in">
+                <div className="flex flex-col items-start gap-4">
+                  <div className="flex items-center gap-3">
+                    <UserButton afterSignOutUrl="/" />
+                    <span className="truncate text-sm font-semibold text-gray-200">
+                      Hello {appUserData?.firstname || clerkFirstName || "User"}
+                    </span>
+                  </div>
+                  <Button className="w-full" onClick={handleLogout}>LogOut</Button>
+                </div>
+              </Show>
+            </div>
           </div>
         </div>
       </aside>
