@@ -68,7 +68,7 @@ const ServiceCard = ({ crew }) => {
     <>
       <article
         onClick={() => navigate(`/product/${crew?._id}`)}
-        className="group relative flex min-h-[34rem] w-full max-w-[23rem] cursor-pointer flex-col overflow-hidden rounded-[28px] border border-white/10 bg-gray-950/95 text-gray-100 shadow-[0_24px_60px_rgba(15,23,42,0.28)] transition duration-300 hover:-translate-y-1.5 hover:border-bgimage/60 hover:shadow-[0_28px_70px_rgba(15,23,42,0.34)]"
+        className="group relative flex min-h-[34rem] w-full max-w-[23rem] cursor-pointer flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(14,14,14,0.98),rgba(27,24,21,0.98))] text-gray-100 shadow-[0_24px_60px_rgba(15,23,42,0.28)] transition duration-300 hover:-translate-y-1.5 hover:border-bgimage/60 hover:shadow-[0_28px_70px_rgba(15,23,42,0.34)]"
       >
         <div className="relative h-64 overflow-hidden bg-[linear-gradient(135deg,#2b1d12_0%,#1d1510_52%,#0f172a_100%)]">
           <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between p-4">
@@ -115,7 +115,7 @@ const ServiceCard = ({ crew }) => {
 
         <div className="flex flex-1 flex-col p-5">
           <div className="min-w-0">
-            <h5 className="line-clamp-2 text-[1.35rem] font-black leading-tight text-white">
+            <h5 className="line-clamp-2 text-[1.35rem] font-black leading-tight tracking-[-0.03em] text-white">
               {crew?.title}
             </h5>
             <p className="mt-2 line-clamp-2 text-sm leading-6 text-gray-300">

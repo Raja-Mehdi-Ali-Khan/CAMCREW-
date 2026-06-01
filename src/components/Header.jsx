@@ -98,10 +98,10 @@ const Header = () => {
 
   return (
     <>
-      <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-gray-950/95 text-white shadow-lg shadow-black/20 backdrop-blur-sm">
-        <section className="w-full">
-          <nav className="flex min-h-[61px] items-center justify-between gap-4 px-4 sm:min-h-[68px] sm:px-6 xl:min-h-[76px] xl:px-8">
-            <div className="flex min-w-0 flex-1 items-center gap-8">
+    <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-[linear-gradient(180deg,rgba(18,17,16,0.96),rgba(20,20,20,0.9))] text-white shadow-lg shadow-black/20 backdrop-blur-xl">
+      <section className="w-full">
+        <nav className="flex min-h-[61px] items-center justify-between gap-4 px-4 sm:min-h-[68px] sm:px-6 xl:min-h-[76px] xl:px-8">
+          <div className="flex min-w-0 flex-1 items-center gap-8">
               <Link
                 className="brand-shine no-underline-effect shrink-0 text-2xl font-black tracking-tight text-white sm:text-3xl"
                 to="/"
@@ -109,66 +109,66 @@ const Header = () => {
                 <span className="brand-shine__text">CamCrew</span>
               </Link>
 
-              <ul className="hidden flex-1 items-center justify-center gap-8 text-sm font-semibold text-gray-200 xl:flex">
-                <li>
-                  <Link to="/" className="transition hover:text-bgimage">
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <a href="#category" className="transition hover:text-bgimage">
-                    Category
-                  </a>
-                </li>
-                <li>
-                  <Link
-                    to="/category/media videography"
-                    className="transition hover:text-bgimage"
-                  >
-                    Portfolios
-                  </Link>
-                </li>
-                <li>
-                  <a href="#footer" className="transition hover:text-bgimage">
-                    Contact Us
-                  </a>
-                </li>
-                <li className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}>
-                  <Link to="/edituser" className="transition hover:text-bgimage">
-                    Edit Profile
-                  </Link>
-                </li>
-                <li className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}>
-                  <Link to="/add" className="transition hover:text-bgimage">
-                    Add Service
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/compare"
-                    className="flex items-center gap-2 transition hover:text-bgimage"
-                  >
-                    Compare
-                    <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-bgimage px-2 text-xs font-black text-gray-950">
-                      {selectedCrews?.length}
-                    </span>
-                  </Link>
+            <ul className="hidden flex-1 items-center justify-center gap-8 text-sm font-semibold text-gray-200 xl:flex">
+              <li>
+                <Link to="/" className="editorial-link transition hover:text-bgimage">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <a href="#category" className="editorial-link transition hover:text-bgimage">
+                  Category
+                </a>
+              </li>
+              <li>
+                <Link
+                  to="/category/media videography"
+                  className="editorial-link transition hover:text-bgimage"
+                >
+                  Portfolios
+                </Link>
+              </li>
+              <li>
+                <a href="#footer" className="editorial-link transition hover:text-bgimage">
+                  Contact Us
+                </a>
+              </li>
+              <li className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}>
+                <Link to="/edituser" className="editorial-link transition hover:text-bgimage">
+                  Edit Profile
+                </Link>
+              </li>
+              <li className={` ${!appUserData?.isCameraman ? "hidden" : ""} `}>
+                <Link to="/add" className="editorial-link transition hover:text-bgimage">
+                  Add Service
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/compare"
+                  className="editorial-link flex items-center gap-2 transition hover:text-bgimage"
+                >
+                  Compare
+                  <span className="editorial-badge flex h-6 min-w-6 items-center justify-center rounded-full px-2 text-xs font-black text-gray-950">
+                    {selectedCrews?.length}
+                  </span>
+                </Link>
                 </li>
               </ul>
             </div>
 
             <div className="hidden shrink-0 items-center gap-4 xl:flex">
-              <button
-                className="relative flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/5 text-bgimage transition hover:bg-white/10"
-                type="button"
-                onClick={() => navigate("/cart")}
-                aria-label="Open favourites"
-              >
-                <FaStar className="h-5 w-5" />
-                <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-bgimage px-1 text-[11px] font-black text-gray-950">
-                  {itemAmount}
-                </span>
-              </button>
+            <button
+              className="editorial-glass relative flex h-10 w-10 items-center justify-center rounded-full text-bgimage transition hover:bg-white/10"
+              type="button"
+              onClick={() => navigate("/cart")}
+              aria-label="Open favourites"
+            >
+              <FaStar className="h-5 w-5" />
+              <span className="editorial-badge absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-black text-gray-950">
+                {itemAmount}
+              </span>
+            </button>
 
               <div className="flex items-center gap-3">
                 <Show when="signed-out">
@@ -189,23 +189,23 @@ const Header = () => {
             </div>
 
             <div className="flex items-center gap-2 xl:hidden">
-              <button
-                className="relative flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-bgimage transition hover:bg-white/10"
-                type="button"
-                onClick={() => navigate("/cart")}
-                aria-label="Open favourites"
-              >
-                <FaStar className="h-4 w-4" />
-                <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-bgimage px-1 text-[10px] font-black text-gray-950">
-                  {itemAmount}
-                </span>
-              </button>
-              <button
-                onClick={handleToggleMenu}
-                className="rounded-full border border-white/10 bg-white/5 p-2.5 text-gray-100 transition hover:bg-white/10"
-                type="button"
-                aria-label="Toggle navigation menu"
-                aria-expanded={isMenu}
+            <button
+              className="editorial-glass relative flex h-9 w-9 items-center justify-center rounded-full text-bgimage transition hover:bg-white/10"
+              type="button"
+              onClick={() => navigate("/cart")}
+              aria-label="Open favourites"
+            >
+              <FaStar className="h-4 w-4" />
+              <span className="editorial-badge absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-black text-gray-950">
+                {itemAmount}
+              </span>
+            </button>
+            <button
+              onClick={handleToggleMenu}
+              className="editorial-glass rounded-full p-2.5 text-gray-100 transition hover:bg-white/10"
+              type="button"
+              aria-label="Toggle navigation menu"
+              aria-expanded={isMenu}
               >
                 {isMenu ? (
                   <svg

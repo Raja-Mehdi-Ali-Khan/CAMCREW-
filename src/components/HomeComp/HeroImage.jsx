@@ -42,14 +42,17 @@ const HeroImage = () => {
 
       <div className="relative z-10 mx-auto flex min-h-[28rem] w-full max-w-[96rem] items-start px-4 pb-8 pt-4 min-[430px]:min-h-[32rem] sm:min-h-[36rem] sm:items-center sm:px-8 sm:pt-5 sm:pb-10 lg:min-h-[40rem] lg:px-10 xl:min-h-[42rem]">
         <div className="hero-fade-up flex w-full max-w-[56rem] flex-col items-center px-1 py-3 text-center sm:px-0 sm:py-4 lg:items-start lg:text-left">
-          <p className="inline-flex max-w-full items-center gap-2 rounded-full border border-amber-200/70 bg-white/40 px-3 py-1.5 text-[8px] font-bold uppercase tracking-[0.12em] text-amber-800 shadow-lg shadow-black/10 backdrop-blur-sm min-[390px]:text-[9px] sm:text-xs">
-            <FontAwesomeIcon icon={faClapperboard} />
-            <span className="truncate">
+          <p className="editorial-badge inline-flex max-w-full items-center gap-2 rounded-full px-4 py-2.5 text-[10px] font-black uppercase leading-none tracking-[0.14em] shadow-[0_16px_36px_rgba(0,0,0,0.18)] backdrop-blur-sm min-[390px]:text-[10.5px] sm:px-5 sm:py-2.5 sm:text-[11px] sm:tracking-[0.16em]">
+            <FontAwesomeIcon
+              icon={faClapperboard}
+              className="shrink-0 text-[10px] sm:text-[11px]"
+            />
+            <span className="truncate whitespace-nowrap leading-none">
               Professional videography marketplace
             </span>
           </p>
 
-          <h1 className="hero-fade-up mt-5 w-full max-w-full text-[2.55rem] font-black leading-[0.92] text-slate-950 min-[390px]:text-[3.1rem] sm:mt-5 sm:max-w-[40rem] sm:text-5xl lg:max-w-[60vw] lg:text-6xl xl:text-[5rem]">
+          <h1 className="hero-fade-up mt-5 w-full max-w-full text-[2.7rem] font-black leading-[0.9] text-[#060b25] drop-shadow-[0_10px_30px_rgba(255,255,255,0.08)] min-[390px]:text-[3.2rem] sm:mt-5 sm:max-w-[40rem] sm:text-5xl lg:max-w-[60vw] lg:text-6xl xl:text-[5rem]">
             Make your brand look cinematic.
             <span className="mt-2 block text-bgimage">
               Stories shot with intention.
@@ -57,7 +60,7 @@ const HeroImage = () => {
           </h1>
 
           <p
-            className="hero-fade-up mt-4 max-w-[36rem] rounded-2xl bg-black/26 px-4 py-3 text-sm font-medium leading-7 text-white shadow-[0_12px_30px_rgba(0,0,0,0.22)] min-[390px]:text-[1rem] sm:max-w-[38rem] sm:text-sm sm:leading-6"
+            className="hero-fade-up editorial-glass mt-4 max-w-[36rem] rounded-[1.8rem] px-4 py-3 text-sm font-medium leading-7 text-white shadow-[0_12px_30px_rgba(0,0,0,0.22)] min-[390px]:text-[1rem] sm:max-w-[38rem] sm:text-sm sm:leading-6"
             style={{ animationDelay: "120ms" }}
           >
             Discover vetted videographers for weddings, campaigns, and events.
@@ -98,7 +101,7 @@ const HeroImage = () => {
             {highlights.map((item) => (
               <div
                 key={item.label}
-                className="hero-chip group inline-flex items-center justify-center gap-2 rounded-full border border-amber-200/70 bg-white/40 px-3 py-2 text-[10px] font-bold text-slate-800 backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-bgimage/40 hover:bg-white/55 sm:text-[11px]"
+                className="hero-chip editorial-chip group inline-flex items-center justify-center gap-2 rounded-full px-3 py-2 text-[10px] font-bold text-slate-800 backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-bgimage/40 hover:bg-white/55 sm:text-[11px]"
               >
                 <FontAwesomeIcon
                   icon={item.icon}

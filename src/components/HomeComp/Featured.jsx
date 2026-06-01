@@ -7,19 +7,20 @@ const Featured = () => {
   return (
     <section
       id="category"
-      className="relative z-0 -mt-4 bg-[linear-gradient(180deg,#ffe49a_0%,#ffc85c_26%,#f0ad43_68%,#dc8d1f_100%)] px-4 pb-10 pt-8 text-slate-900 sm:-mt-6 sm:px-6 sm:pb-12 sm:pt-10 lg:-mt-8 lg:px-8 lg:pb-16 lg:pt-12"
+      className="relative z-0 -mt-4 bg-[linear-gradient(180deg,#ffe9b6_0%,#ffd374_26%,#f0ad43_68%,#d8891f_100%)] px-4 pb-10 pt-8 text-slate-900 sm:-mt-6 sm:px-6 sm:pb-12 sm:pt-10 lg:-mt-8 lg:px-8 lg:pb-16 lg:pt-12"
     >
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_14%,rgba(255,255,255,0.32),transparent_20%)]" />
       <div className="mx-auto max-w-[94rem]">
         <div className="mb-5 flex flex-col justify-between gap-4 md:flex-row md:items-end lg:mb-7 lg:gap-5">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-bgdarkimage sm:text-sm">
+            <p className="editorial-kicker sm:text-sm">
               Browse by need
             </p>
-            <h2 className="mt-2 max-w-2xl text-3xl font-black leading-tight sm:text-4xl md:text-5xl">
+            <h2 className="editorial-title mt-2 max-w-2xl text-3xl font-black leading-tight text-[#251809] sm:text-4xl md:text-5xl">
               Find the right creative crew faster.
             </h2>
           </div>
-          <p className="max-w-xl text-sm leading-6 text-slate-700 sm:text-base sm:leading-7">
+          <p className="max-w-xl text-sm leading-6 text-[#5f4321] sm:text-base sm:leading-7">
             Choose a category, compare portfolios, and move from discovery to
             booking without losing context.
           </p>
@@ -30,7 +31,7 @@ const Featured = () => {
             <Link
               key={category.id}
               to={`/category/${category.name.toLowerCase()}`}
-              className="group grid overflow-hidden rounded-[2rem] border border-white/10 bg-gray-950/95 text-gray-100 shadow-[0_24px_60px_rgba(15,23,42,0.28)] outline-none transition duration-300 hover:-translate-y-1 hover:border-bgimage/60 hover:shadow-[0_26px_70px_rgba(15,23,42,0.34)] focus:ring-2 focus:ring-bgimage focus:ring-offset-2 focus:ring-offset-[#d38a1f] lg:grid-cols-[1.08fr_0.92fr]"
+              className="editorial-shell group grid overflow-hidden rounded-[2rem] text-gray-100 outline-none transition duration-300 hover:-translate-y-1 hover:border-bgimage/60 hover:shadow-[0_26px_70px_rgba(15,23,42,0.34)] focus:ring-2 focus:ring-bgimage focus:ring-offset-2 focus:ring-offset-[#d38a1f] lg:grid-cols-[1.08fr_0.92fr]"
             >
               <div
                 className={`relative min-h-[16rem] overflow-hidden sm:min-h-[20rem] lg:min-h-[24rem] ${
@@ -58,18 +59,18 @@ const Featured = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col justify-center p-5 sm:p-8 lg:p-12">
-                <p className="text-xs font-black uppercase tracking-wide text-bgdarkimage sm:text-sm">
+              <div className="relative z-10 flex flex-col justify-center p-5 sm:p-8 lg:p-12">
+                <p className="editorial-kicker sm:text-sm">
                   {category.tone}
                 </p>
-                <h3 className="mt-2 text-2xl font-black leading-tight sm:text-3xl md:text-4xl">
+                <h3 className="editorial-title mt-2 text-2xl font-black leading-tight sm:text-3xl md:text-4xl">
                   {category.name}
                 </h3>
-                <p className="mt-4 text-sm leading-7 text-gray-300 sm:text-base sm:leading-8">
+                <p className="editorial-copy mt-4 text-sm sm:text-base sm:leading-8">
                   {category.description}
                 </p>
 
-                <div className="mt-5 rounded-[1.25rem] border border-white/10 bg-white/5 p-3 sm:mt-6 sm:p-4">
+                <div className="editorial-panel mt-5 rounded-[1.25rem] p-3 sm:mt-6 sm:p-4">
                   <div className="flex gap-3">
                     <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-bgimage text-xs text-gray-950">
                       <FontAwesomeIcon icon={faCheck} />

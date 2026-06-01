@@ -18,7 +18,8 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer id="footer" className="border-t border-white/5 bg-footer_bg text-white">
+    <footer id="footer" className="relative border-t border-white/5 bg-footer_bg text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(255,210,120,0.12),transparent_22%)]" />
       <div className="w-full px-5 py-5 sm:px-8 lg:px-10 lg:py-6">
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-[1.05fr_1fr_0.5fr_1fr] lg:items-start lg:gap-6">
           <div>
@@ -105,7 +106,7 @@ const Footer = () => {
             <div className="mt-5">
               <Link
                 to="/form"
-                className="join-crew-button inline-flex min-h-[2.8rem] items-center justify-center rounded-full px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.12em] text-slate-950 shadow-lg shadow-black/20 transition duration-300 hover:-translate-y-0.5"
+                className="join-crew-button inline-flex min-h-[2.8rem] items-center justify-center rounded-full px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.16em] text-slate-950 shadow-lg shadow-black/20 transition duration-300 hover:-translate-y-0.5"
               >
                 <span className="relative z-10">Join the Crew</span>
               </Link>
